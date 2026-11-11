@@ -60,7 +60,6 @@ tarea1/
 │   ├── ficha.py                   # Normalización clínica
 │   ├── adjuntos.py                # Copia/pegar bytes, límite 5 MB
 │   ├── modelos.py                 # AnimalRefugio ABC + subclases (@property)
-│   ├── decoradores.py             # @cuenta_usos (decorador propio)
 │   ├── adaptador_poo.py           # dict ↔ objeto + resumen polimórfico
 │   ├── gestor_especies.py         # Catálogo + especies_personalizadas.json
 │   └── recursos.py                # Logo
@@ -286,7 +285,7 @@ Escritura atómica (temporal + `replace`). No meter I/O dentro de `validar_datos
 | ABC + herencia | `datos/modelos.py` → `AnimalRefugio` ← `Perro`/`Gato`/`Conejo`/`Loro`/`Hamster` |
 | Getters / setters | `@property` + `@nombre.setter`, `@edad.setter`, … |
 | Decoradores stdlib | `@abstractmethod`, `@classmethod`, `@property` |
-| Decorador propio | `@cuenta_usos` en `datos/decoradores.py` (usado en `info_basica`) |
+| Resumen breve | `info_basica()` en `AnimalRefugio` (usado por `resumen_polimorfico`) |
 | Adaptador | `registro_a_animal` / `animal_a_campos` / `resumen_polimorfico` |
 | Ficha POO | `cuidados_especificos()` + `generar_ficha()` en `AnimalRefugio` |
 | Especies personalizadas | `EspeciePersonalizada` + `gestor_especies.py` + `especies_personalizadas.json` |

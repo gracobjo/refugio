@@ -12,7 +12,6 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, Type
 
 from datos.constantes import PESO_MAX_KG, PESO_MIN_KG
-from datos.decoradores import cuenta_usos
 
 
 class AnimalRefugio(ABC):
@@ -116,9 +115,8 @@ class AnimalRefugio(ABC):
 
     # --- Comportamiento polimórfico ---
 
-    @cuenta_usos
     def info_basica(self) -> str:
-        """Resumen corto; decorado con ``@cuenta_usos``."""
+        """Resumen corto del animal."""
         return (
             f"{self.nombre} ({self.especie}), "
             f"{self.edad} años, {self.peso:.2f} kg"

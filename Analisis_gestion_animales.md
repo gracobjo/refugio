@@ -59,7 +59,7 @@ El enunciado exige **diccionario + CRUD + Tkinter**. La ficha vive en un `dict`;
 | Diccionarios | Inventario `dict[int, dict]`; ID = identidad |
 | Herencia + ABC | `AnimalRefugio` (abstracta) → `Perro`, `Gato`, `Conejo`, `Loro`, `Hamster` en `datos/modelos.py` |
 | Getters / setters | `@property` + `@xxx.setter` (nombre, edad, peso, color, observaciones) |
-| Decoradores | `@abstractmethod`, `@property`, `@classmethod`, y propio `@cuenta_usos` en `datos/decoradores.py` |
+| Decoradores | `@abstractmethod`, `@property`, `@classmethod` |
 | Polimorfismo | `hacer_sonido()` / `tipo_alimentacion()` / `cuidados_especificos()`; la GUI muestra `generar_ficha()` sin `if` por especie |
 | Puente dict ↔ objeto | `datos/adaptador_poo.py` (`registro_a_animal`, `animal_a_campos`) |
 | Ficha en Tkinter | Panel «Información del animal seleccionado»: dict → adaptador → objeto → `generar_ficha()`; scrollbars en comportamiento / alimentación / cuidados |
@@ -260,7 +260,7 @@ Ejecución: `python app.py` desde `tarea1/`.
 
 ### 5. ¿Por qué el CRUD no usa solo clases?
 
-El enunciado pide **diccionarios**. Por eso el inventario sigue siendo `dict`. Las clases (`AnimalRefugio` y subclases) existen en `datos/modelos.py` con herencia, `@property` y decoradores; el adaptador las construye cuando hace falta (p. ej. resumen polimórfico en la GUI).
+El enunciado pide **diccionarios**. Por eso el inventario sigue siendo `dict`. Las clases (`AnimalRefugio` y subclases) existen en `datos/modelos.py` con herencia y `@property`; el adaptador las construye cuando hace falta (p. ej. resumen polimórfico en la GUI).
 
 ### 6. ¿Qué pasa si dos animales tienen el mismo nombre?
 

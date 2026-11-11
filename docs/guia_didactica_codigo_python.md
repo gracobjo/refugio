@@ -110,7 +110,6 @@ flowchart TB
   val --> ficha
   adap --> mod[datos.modelos]
   adap --> cat
-  mod --> dec[datos.decoradores]
   mod --> const[datos.constantes]
   fichaUI --> adj
   fichaUI --> port[interfaz.portapapeles]
@@ -260,42 +259,7 @@ Ninguno.
 
 **Conceptos:** tupla (inmutable), constantes por convención en MAYÚSCULAS.
 
-### 2.5. `datos/decoradores.py`
-
-#### A. Identificación
-
-Decorador didáctico `@cuenta_usos` para demostrar decoradores propios además de `@property` / `@abstractmethod`.
-
-#### B. Imports
-
-- `from __future__ import annotations`
-- `from functools import wraps` — preserva el nombre/docstring del método original.
-- `from typing import Any, Callable, TypeVar` — tipado genérico del decorador.
-
-#### `cuenta_usos(metodo)`
-
-**1. Sirve para** contar cuántas veces se llama un método de instancia.
-
-**2. Se ejecuta** al **definir** la clase (cuando Python aplica el decorador) y la *envoltura* se ejecuta en cada llamada.
-
-**3. Parámetro `metodo`:** la función original.
-
-**4. Paso a paso:** crea `envoltura(self, *args, **kwargs)` que:
-1. Construye el nombre `_usos_<nombre_metodo>`.
-2. Lee el contador con `getattr(..., 0)` y lo incrementa con `setattr`.
-3. Llama al método original y devuelve su resultado.
-
-**5. Devuelve** la función envoltorio (mismo contrato tipado con `TypeVar`).
-
-**6. Efecto:** añade atributo dinámico en la instancia (p. ej. `_usos_info_basica`).
-
-**7. Uso real:** decora `AnimalRefugio.info_basica`. Comprobado en `tests/test_modelos_poo.py`.
-
-**8. Ejemplo:** tras dos `perro.info_basica()`, `perro._usos_info_basica == 2`.
-
-**9. Conceptos:** decoradores, `*args`/`**kwargs`, `functools.wraps`, closures.
-
-### 2.6. `datos/recursos.py`
+### 2.5. `datos/recursos.py`
 
 #### A. Identificación
 
@@ -321,7 +285,7 @@ Localiza el logo del refugio (`refugio.png` / `.jpg` / …) en `tarea1/` o en la
 
 **Uso:** interfaz y exportación PDF.
 
-### 2.7. `datos/inventario.py`
+### 2.6. `datos/inventario.py`
 
 #### A. Identificación
 
@@ -430,7 +394,7 @@ return nuevo_id
 
 **6.** Memoria + borrado de carpeta `adjuntos/<id>/`.
 
-### 2.8. `datos/persistencia_inventario.py`
+### 2.7. `datos/persistencia_inventario.py`
 
 #### A. Identificación
 
@@ -477,7 +441,7 @@ Invierte el proceso: exige un objeto/dict; ignora claves no convertibles a int y
 
 **Importante para la defensa:** JSON corrupto no se borra automáticamente.
 
-### 2.9. `datos/ficha.py`
+### 2.8. `datos/ficha.py`
 
 #### A. Identificación
 
@@ -512,7 +476,7 @@ Si falta una clave o es `None`, la rellena con deepcopy del valor por defecto. D
 
 **Conceptos:** validación defensiva, listas de diccionarios anidados.
 
-### 2.10. `datos/adjuntos.py`
+### 2.9. `datos/adjuntos.py`
 
 #### A. Identificación
 
@@ -541,7 +505,7 @@ Copia fotos/documentos a `adjuntos/<id_animal>/` con límite de 5 MiB.
 
 **Distinción JSON vs disco:** el JSON guarda metadatos (ruta, nombre, fecha); el archivo binario vive en `adjuntos/`.
 
-### 2.11. `datos/gestor_especies.py`
+### 2.10. `datos/gestor_especies.py`
 
 #### A. Identificación
 
@@ -582,7 +546,7 @@ Catálogo de especies nativas + personalizadas con persistencia en `especies_per
 
 **Importación circular:** `validar_datos` importa `get_catalogo` **dentro** de la función (diferida) para reducir acoplamiento al importar el módulo.
 
-### 2.12. `datos/modelos.py`
+### 2.11. `datos/modelos.py`
 
 > Explicación profunda también en la [sección 3](#3-capítulo-especial-de-poo). Aquí se documenta el inventario de definiciones.
 
@@ -596,7 +560,6 @@ Modelo POO didáctico: ABC `AnimalRefugio`, especies nativas y `EspeciePersonali
 - `ABC`, `abstractmethod` — clase abstracta.
 - `Any`, `Dict`, `Type` — tipado.
 - `PESO_*` — límites.
-- `cuenta_usos` — decorador.
 
 #### Clase `AnimalRefugio(ABC)`
 
@@ -606,7 +569,7 @@ Atributos de clase: `ESPECIE`, `EDAD_MINIMA`, `EDAD_MAXIMA`.
 
 **Propiedades** `nombre`, `edad`, `peso`, `color`, `observaciones` (+ setters con validación). `especie` solo lectura desde `ESPECIE`.
 
-**`info_basica()`** (con `@cuenta_usos`): resumen corto.
+**`info_basica()`:** resumen corto (nombre, especie, edad, peso); lo usa `resumen_polimorfico`.
 
 **Abstractos:** `hacer_sonido`, `tipo_alimentacion`, `cuidados_especificos`.
 
@@ -628,7 +591,7 @@ Sí define `__init__` con kwargs `nombre_especie`, `sonido`, `alimentacion`, `cu
 
 Mapa nombre → clase nativa. Lo usa el adaptador.
 
-### 2.13. `datos/adaptador_poo.py`
+### 2.12. `datos/adaptador_poo.py`
 
 #### A. Identificación
 
@@ -657,7 +620,7 @@ Exporta campos básicos. **En la app principal no se llama**; sí en `tests/test
 
 Demo de polimorfismo para la barra de estado al seleccionar. Usa `info_basica`, `hacer_sonido`, `tipo_alimentacion`.
 
-### 2.14. `validaciones/__init__.py` y `validaciones/reglas.py`
+### 2.13. `validaciones/__init__.py` y `validaciones/reglas.py`
 
 #### `__init__.py`
 
@@ -684,7 +647,7 @@ Reexporta `validar_datos`.
 
 **Conceptos:** keyword-only (`*`), excepciones, separación UI/dominio.
 
-### 2.15. `exportacion/__init__.py` y `exportacion/pdf_fichas.py`
+### 2.14. `exportacion/__init__.py` y `exportacion/pdf_fichas.py`
 
 #### `__init__.py` — carga perezosa
 
@@ -717,7 +680,7 @@ Así la GUI no exige `fpdf2` hasta exportar. `GestorAnimales._exportar_pdf` impo
 
 Escritura también vía temporal + `replace` (evita Permission denied en Windows si el PDF está abierto).
 
-### 2.16. Paquete `interfaz/`
+### 2.15. Paquete `interfaz/`
 
 #### `interfaz/__init__.py`
 
@@ -920,7 +883,7 @@ Documentos/foto: importar, pegar (portapapeles), abrir (`os.startfile` — **Win
 
 ### 3.1. Por qué existe esta capa
 
-El enunciado exige diccionarios. Las clases demuestran Tema 2 (ABC, herencia, propiedades, polimorfismo, decoradores) **sin reemplazar** el almacenamiento principal.
+El enunciado exige diccionarios. Las clases demuestran Tema 2 (ABC, herencia, propiedades, polimorfismo) **sin reemplazar** el almacenamiento principal.
 
 ### 3.2. `AnimalRefugio` como clase abstracta
 
@@ -1081,7 +1044,6 @@ IDs seleccionados o visibles → `asksaveasfilename` → import diferido `export
 | Escritura atómica | Integridad | Menos JSON rotos | Escritura directa | Temp files |
 | Clínica separada de POO | Enunciado + pragmática | CRUD simple | Todo en la clase | Ficha POO no muestra vacunas |
 | Adjuntos en disco | JSON no es blob store | Archivos reales | Base64 en JSON | Rutas locales frágiles |
-| Decorador `cuenta_usos` | Didáctico | Ejemplo real | Solo @property | No crítico en producción |
 | Tests unittest | Sin deps extra | Automatizable | Solo manual | GUI necesita Tk |
 | Import diferido PDF | Arranque sin fpdf2 | App usable sin export | Import top-level | Error al exportar si falta paquete |
 | PDF separado | No mezclar con GUI | Reutilizable | Imprimir desde Tk | Dependencia fpdf2 |
@@ -1131,7 +1093,7 @@ Técnicas: `unittest.TestCase`, `TemporaryDirectory`, `patch` de messagebox/file
 - **Clase:** plantilla para crear objetos (`class Gato`).
 - **Clase abstracta:** clase incompleta que no se instancia; exige métodos abstractos.
 - **Constructor:** `__init__`, inicializa la instancia.
-- **Decorador:** función que envuelve otra (`@cuenta_usos`, `@property`, `@abstractmethod`).
+- **Decorador:** función que envuelve otra (`@property`, `@abstractmethod`, `@classmethod`).
 - **Diccionario:** mapa clave→valor. El inventario es `Dict[int, Dict[str, Any]]`.
 - **Encapsulación:** ocultar detalles (`_nombre`) y controlar acceso con properties.
 - **Excepción:** señal de error (`ValueError`) capturada con `try/except`.
@@ -1240,8 +1202,8 @@ Ida y vuelta JSON, siembra si no hay archivo, claves string, y que un JSON corru
 ### 27. ¿Por qué `actualizar_animal` recibe `especie_previa`?
 Para permitir guardar un animal cuya especie personalizada ya está desactivada (no se pueden altas nuevas, pero sí editar existentes).
 
-### 28. ¿Dónde se usa el decorador propio?
-`@cuenta_usos` en `info_basica`; el contador vive en `self._usos_info_basica`.
+### 28. ¿Para qué sirve `info_basica()`?
+Devuelve un resumen corto del animal (nombre, especie, edad, peso). Lo usa `resumen_polimorfico` en la barra de estado al seleccionar un registro.
 
 ### 29. ¿`animal_a_campos` se usa en la app?
 No en el flujo GUI habitual; sí en tests. Conviene mencionarlo si preguntan por funciones “sin uso en producción”.
@@ -1268,7 +1230,7 @@ No en el flujo GUI habitual; sí en tests. Conviene mencionarlo si preguntan por
 **Dominar:** `ValueError`, keyword-only, catálogo activo vs previa.
 
 ### Nivel 5 — POO
-**Archivos:** `modelos.py`, `decoradores.py`, `test_modelos_poo.py`.  
+**Archivos:** `modelos.py`, `test_modelos_poo.py`.  
 **Dominar:** ABC, herencia, properties, polimorfismo.
 
 ### Nivel 6 — Adaptador
@@ -1479,41 +1441,40 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 | 2 | `main.py` | Alias de arranque |
 | 3 | `datos/__init__.py` | Reexport CRUD |
 | 4 | `datos/constantes.py` | Especies y pesos |
-| 5 | `datos/decoradores.py` | `@cuenta_usos` |
-| 6 | `datos/recursos.py` | Logo |
-| 7 | `datos/inventario.py` | CRUD dict |
-| 8 | `datos/persistencia_inventario.py` | JSON inventario |
-| 9 | `datos/ficha.py` | Clínica |
-| 10 | `datos/adjuntos.py` | Archivos |
-| 11 | `datos/gestor_especies.py` | Catálogo |
-| 12 | `datos/modelos.py` | POO |
-| 13 | `datos/adaptador_poo.py` | Dict↔objeto |
-| 14 | `validaciones/__init__.py` | Reexport |
-| 15 | `validaciones/reglas.py` | `validar_datos` |
-| 16 | `exportacion/__init__.py` | Lazy PDF |
-| 17 | `exportacion/pdf_fichas.py` | Generador PDF |
-| 18 | `interfaz/__init__.py` | Reexport |
-| 19 | `interfaz/estilos.py` | Tema |
-| 20 | `interfaz/vista_foto.py` | Miniaturas |
-| 21 | `interfaz/portapapeles.py` | Pegar adjuntos |
-| 22 | `interfaz/gestor.py` | Ventana principal |
-| 23 | `interfaz/dialogo_especies.py` | UI especies |
-| 24 | `interfaz/ficha_clinica.py` | UI clínica |
-| 25 | `ejecutar_tests.py` | Runner tests |
-| 26 | `probar_crud.py` | Demo CRUD |
-| 27 | `generar_pdf.py` | PDF análisis tarea |
-| 28 | `generar_arquitectura_docs.py` | Notebook+PDF arch. |
-| 29 | `muestras/generar_muestras.py` | Material muestra |
-| 30 | `tests/__init__.py` | Paquete tests |
-| 31 | `tests/test_datos.py` | Tests CRUD |
-| 32 | `tests/test_validaciones.py` | Tests validación |
-| 33 | `tests/test_modelos_poo.py` | Tests POO |
-| 34 | `tests/test_gestor_especies.py` | Tests catálogo |
-| 35 | `tests/test_persistencia_inventario.py` | Tests JSON |
-| 36 | `tests/test_ficha_clinica.py` | Tests clínica |
-| 37 | `tests/test_exportacion_pdf.py` | Tests PDF |
-| 38 | `tests/test_interfaz.py` | Tests GUI |
-| 39 | `tests/test_portapapeles.py` | Tests clipboard |
+| 5 | `datos/recursos.py` | Logo |
+| 6 | `datos/inventario.py` | CRUD dict |
+| 7 | `datos/persistencia_inventario.py` | JSON inventario |
+| 8 | `datos/ficha.py` | Clínica |
+| 9 | `datos/adjuntos.py` | Archivos |
+| 10 | `datos/gestor_especies.py` | Catálogo |
+| 11 | `datos/modelos.py` | POO |
+| 12 | `datos/adaptador_poo.py` | Dict↔objeto |
+| 13 | `validaciones/__init__.py` | Reexport |
+| 14 | `validaciones/reglas.py` | `validar_datos` |
+| 15 | `exportacion/__init__.py` | Lazy PDF |
+| 16 | `exportacion/pdf_fichas.py` | Generador PDF |
+| 17 | `interfaz/__init__.py` | Reexport |
+| 18 | `interfaz/estilos.py` | Tema |
+| 19 | `interfaz/vista_foto.py` | Miniaturas |
+| 20 | `interfaz/portapapeles.py` | Pegar adjuntos |
+| 21 | `interfaz/gestor.py` | Ventana principal |
+| 22 | `interfaz/dialogo_especies.py` | UI especies |
+| 23 | `interfaz/ficha_clinica.py` | UI clínica |
+| 24 | `ejecutar_tests.py` | Runner tests |
+| 25 | `probar_crud.py` | Demo CRUD |
+| 26 | `generar_pdf.py` | PDF análisis tarea |
+| 27 | `generar_arquitectura_docs.py` | Notebook+PDF arch. |
+| 28 | `muestras/generar_muestras.py` | Material muestra |
+| 29 | `tests/__init__.py` | Paquete tests |
+| 30 | `tests/test_datos.py` | Tests CRUD |
+| 31 | `tests/test_validaciones.py` | Tests validación |
+| 32 | `tests/test_modelos_poo.py` | Tests POO |
+| 33 | `tests/test_gestor_especies.py` | Tests catálogo |
+| 34 | `tests/test_persistencia_inventario.py` | Tests JSON |
+| 35 | `tests/test_ficha_clinica.py` | Tests clínica |
+| 36 | `tests/test_exportacion_pdf.py` | Tests PDF |
+| 37 | `tests/test_interfaz.py` | Tests GUI |
+| 38 | `tests/test_portapapeles.py` | Tests clipboard |
 
 ---
 
@@ -1521,7 +1482,7 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 
 | Elemento | Cantidad |
 | --- | --- |
-| Archivos `.py` | 39 |
+| Archivos `.py` | 38 |
 | Clases (AST) | 31 |
 | Funciones y métodos (AST) | 330 |
 | Cobertura documental | Todas listadas en Anexo D; explicación didáctica en §2–§3 y Anexo A |
@@ -1569,11 +1530,6 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 ### Inventario de `datos/constantes.py`
 | Cualificador | Tipo | Docstring / nota |
 | --- | --- | --- |
-
-### Inventario de `datos/decoradores.py`
-| Cualificador | Tipo | Docstring / nota |
-| --- | --- | --- |
-| `cuenta_usos` | función | Decorador de método de instancia: cuenta cuántas veces se invoca. |
 
 ### Inventario de `datos/ficha.py`
 | Cualificador | Tipo | Docstring / nota |
@@ -1639,7 +1595,7 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 | `AnimalRefugio.observaciones` | método | Notas libres del refugio. |
 | `AnimalRefugio.observaciones` | método | (sin docstring) |
 | `AnimalRefugio.especie` | método | Especie fijada por la subclase (solo lectura). |
-| `AnimalRefugio.info_basica` | método | Resumen corto; decorado con ``@cuenta_usos``. |
+| `AnimalRefugio.info_basica` | método | Resumen corto del animal. |
 | `AnimalRefugio.hacer_sonido` | método | Sonido característico (cada especie lo implementa). |
 | `AnimalRefugio.tipo_alimentacion` | método | Tipo de alimentación de la especie. |
 | `AnimalRefugio.cuidados_especificos` | método | Orientaciones generales de cuidado de la especie (no son consejo veterinario). |
@@ -1983,7 +1939,6 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 | `TestPropertyGettersSetters.test_setter_peso_rechaza_exceso` | método | (sin docstring) |
 | `TestPropertyGettersSetters.test_setter_nombre_y_color` | método | (sin docstring) |
 | `TestDecoradorYClassmethod` | clase | (sin docstring) |
-| `TestDecoradorYClassmethod.test_cuenta_usos_en_info_basica` | método | (sin docstring) |
 | `TestDecoradorYClassmethod.test_classmethod_campos_desde_dict` | método | (sin docstring) |
 | `TestEspeciePersonalizada` | clase | (sin docstring) |
 | `TestEspeciePersonalizada.test_instancia_y_metodos` | método | (sin docstring) |
@@ -2052,7 +2007,6 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 9. **Comparación de especies con `casefold`:** no unifica tildes (`Hámster` vs `Hamster`).
 10. **Eliminar documento en la UI:** quita la entrada del JSON/lista; no necesariamente borra el fichero físico suelto (el borrado masivo de carpeta ocurre al borrar el animal).
 11. **Funciones anidadas (no aparecen como métodos de clase en el Anexo D AST de primer nivel):**
-    - `cuenta_usos` → `envoltura` (decorador).
     - `GestorAnimales._crear_controles` → `_bloque_etiqueta` y `_bloque_scroll` (helpers locales de layout de la ficha POO).
     - `_docx` en `muestras/generar_muestras.py` → `parrafo` (genera XML de párrafos DOCX).
 12. **Lambdas de UI:** en `gestor.py` hay lambdas en `bind` (búsqueda, filtro) y en `pdf_fichas._dibujar_ficha` / `_seccion_lista` (formateo de líneas). No son `def` con nombre; su rol es conectar eventos o formatear texto.
@@ -2060,4 +2014,4 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 
 ---
 
-*Fin de la guía didáctica. Archivos Python analizados: 39. Clases: 31. Funciones/métodos (AST de módulo/clase): 330, más 4 funciones anidadas listadas arriba.*
+*Fin de la guía didáctica. Archivos Python analizados: 38. Clases: 31. Funciones/métodos (AST de módulo/clase): ~330, más las funciones anidadas listadas arriba.*

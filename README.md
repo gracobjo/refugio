@@ -84,7 +84,7 @@ python -m unittest discover -s tarea1/tests -v
 | `tests/test_validaciones.py` | `validar_datos()` |
 | `tests/test_exportacion_pdf.py` | PDF de fichas |
 | `tests/test_ficha_clinica.py` | Tratamientos, vacunas, docs, foto |
-| `tests/test_modelos_poo.py` | Herencia, `@property`, decoradores, adaptador |
+| `tests/test_modelos_poo.py` | Herencia, `@property`, adaptador |
 | `tests/test_gestor_especies.py` | Catálogo dinámico y JSON de especies |
 | `tests/test_portapapeles.py` | Lectura del portapapeles |
 | `tests/test_persistencia_inventario.py` | `inventario.json` carga/guarda |
@@ -101,7 +101,7 @@ tarea1/
 ├── datos/
 │   ├── constantes.py / inventario.py / persistencia_inventario.py
 │   ├── ficha.py / adjuntos.py / recursos.py
-│   ├── modelos.py / decoradores.py / adaptador_poo.py
+│   ├── modelos.py / adaptador_poo.py
 │   ├── gestor_especies.py / especies_personalizadas.json
 │   └── inventario.json            # (runtime; no va en el ZIP)
 ├── validaciones/reglas.py
@@ -162,7 +162,7 @@ El inventario se manipula en memoria como **diccionarios** y se **persiste** en 
 
 ## Temario
 
-- `Tema2-POO/` — diccionarios + capa `AnimalRefugio` (herencia, properties, decoradores)
+- `Tema2-POO/` — diccionarios + capa `AnimalRefugio` (herencia, properties)
 - `Tema3-InterfacesGraficas/` — pack/grid, StringVar, Treeview, diálogos, etc.
 
 ### Capa POO (Tema 2) sin romper el enunciado

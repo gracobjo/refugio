@@ -13,7 +13,7 @@ Sistema: aplicación de escritorio (Tkinter) para gestionar el inventario de un 
 | RF-01 | Mantener un inventario de animales con ID numérico único. | Alta | `datos/inventario.py` |
 | RF-02 | Cada ficha incluye nombre, especie, edad, peso, color y observaciones. | Alta | Esquema del `dict` |
 | RF-03 | Especies admitidas: Perro, Gato, Conejo, Loro, Hámster. | Alta | `datos/constantes.py` → `ESPECIES` |
-| RF-03b | Capa POO paralela: `AnimalRefugio` + subclases, `@property`, decoradores; adaptador dict↔objeto; resumen polimórfico al seleccionar. | Media | `datos/modelos.py`, `decoradores.py`, `adaptador_poo.py` |
+| RF-03b | Capa POO paralela: `AnimalRefugio` + subclases, `@property`; adaptador dict↔objeto; resumen polimórfico al seleccionar (`info_basica`). | Media | `datos/modelos.py`, `adaptador_poo.py` |
 | RF-04 | **Crear** animal desde el formulario. | Alta | Botón Crear |
 | RF-05 | **Consultar** (leer) al seleccionar una fila; rellenar formulario y mostrar foto si existe. | Alta | `<<TreeviewSelect>>` |
 | RF-06 | **Actualizar** el animal seleccionado (conservando datos clínicos si no se envían). | Alta | Botón Actualizar |

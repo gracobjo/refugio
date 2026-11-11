@@ -141,7 +141,6 @@ print("5. mainloop() espera eventos del usuario")"""
 | `inventario.py` | Operaciones CRUD sobre diccionarios |
 | `persistencia_inventario.py` | Carga/guarda `inventario.json` (atómico) |
 | `modelos.py` | Clases POO |
-| `decoradores.py` | Decorador `cuenta_usos` |
 | `adaptador_poo.py` | Dict ↔ objeto POO |
 | `gestor_especies.py` | Catálogo dinámico de especies |
 | `especies_personalizadas.json` | Especies creadas desde Tkinter |
@@ -285,21 +284,17 @@ for animal in (luna, nico):
     print(ficha["alimentacion"])"""
     ),
     md(
-        """### D. `decoradores.py`
-
-`@cuenta_usos` incrementa un contador `_usos_<metodo>` en el objeto cada vez que se llama (p. ej. `info_basica`). Demuestra ampliar comportamiento sin tocar la lógica original.
-
-### E. `adaptador_poo.py`
+        """### D. `adaptador_poo.py`
 
 | Función | Responsabilidad |
 | --- | --- |
 | `registro_a_animal()` | Dict → objeto (nativa o personalizada) |
 | `animal_a_campos()` | Objeto → campos básicos |
-| `resumen_polimorfico()` | Resumen vía métodos del objeto |
+| `resumen_polimorfico()` | Resumen vía métodos del objeto (`info_basica`, sonido, alimentación) |
 
 Flujo de `registro_a_animal()`: especie → clase nativa si existe → si no, config del catálogo → `EspeciePersonalizada` → error controlado si falla.
 
-### F. `gestor_especies.py` — `CatalogoEspecies`
+### E. `gestor_especies.py` — `CatalogoEspecies`
 
 Persistencia / consultas / modificaciones del JSON de especies. La interfaz no escribe JSON a mano: llama `catalogo.anadir(datos)`.
 
@@ -372,7 +367,7 @@ Treeview → dict → `registro_a_animal()` → `generar_ficha()` → panel Tkin
 | Herencia | Especies concretas |
 | Encapsulación | Properties / setters |
 | Polimorfismo | `generar_ficha()` / sonido / cuidados |
-| Decoradores | `@cuenta_usos` |
+| Decoradores | `@abstractmethod`, `@property`, `@classmethod` |
 | Métodos de clase | `campos_desde_dict()` |
 
 Una especie personalizada **no** es una clase Python nueva: es un `EspeciePersonalizada` configurado (p. ej. como Hurón)."""
