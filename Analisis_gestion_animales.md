@@ -64,7 +64,7 @@ El enunciado exige **diccionario + CRUD + Tkinter**. La ficha vive en un `dict`;
 | Puente dict ↔ objeto | `datos/adaptador_poo.py` (`registro_a_animal`, `animal_a_campos`) |
 | Ficha en Tkinter | Panel «Información del animal seleccionado»: dict → adaptador → objeto → `generar_ficha()`; scrollbars en comportamiento / alimentación / cuidados |
 | Especies dinámicas | Nativas (clases fijas) + personalizadas (`EspeciePersonalizada` + `especies_personalizadas.json`) vía *Gestionar especies* |
-| Validación procedural | `validar_datos()` sigue siendo la puerta del CRUD (coherente con los setters) |
+| Validación en dos vías | `validar_datos()` protege el CRUD (`dict`); los setters de `AnimalRefugio` encapsulan el objeto POO (detalle en la guía didáctica §3.7) |
 
 **Idea clave:** *«El CRUD trabaja con diccionarios, como pide el enunciado; la herencia y las properties son una capa didáctica conectada por un adaptador.»*
 

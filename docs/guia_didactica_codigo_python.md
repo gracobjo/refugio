@@ -974,6 +974,27 @@ sequenceDiagram
 **Ventajas híbridas:** cumple enunciado (dicts), enseña POO, UI desacoplada de especies.  
 **Limitaciones:** doble representación; hay que sincronizar mentalmente dict ↔ objeto; la clínica no vive en las clases POO.
 
+### 3.7. Dos vías de validación (funciones y setters)
+
+No es un error de diseño: el proyecto tiene **dos puertas de validación** porque tiene **dos representaciones** de los datos.
+
+| Vía | Dónde | Cuándo se usa | Qué comprueba |
+| --- | --- | --- | --- |
+| Procedimental | `validaciones/reglas.py` → `validar_datos()` | Antes de `crear_animal` / `actualizar_animal` (CRUD sobre `dict`) | Nombre, especie (catálogo activo o `especie_previa`), color, edad 0–30, peso finito en rango, y normaliza clínica (foto, tratamientos, vacunas, documentos) |
+| Orientada a objetos | Setters `@property` en `AnimalRefugio` (`datos/modelos.py`) | Al construir o asignar atributos del objeto (`registro_a_animal` → `Perro(...)`, etc.) | Nombre, color, edad y peso (mismos rangos/constantes de peso); **no** valida el catálogo de especies ni la ficha clínica |
+
+**Flujo habitual en la app**
+
+1. El formulario envía un **diccionario**.
+2. El CRUD llama a `validar_datos` → si falla, no se guarda nada.
+3. El inventario y el JSON siguen siendo **dicts**.
+4. Al seleccionar un animal, el **adaptador** (`registro_a_animal`) crea un objeto temporal; ahí vuelven a ejecutarse los setters.
+5. El objeto sirve para la ficha POO / resumen; **no** sustituye al registro del inventario.
+
+**Ejemplo:** si el peso es `150`, `validar_datos` lanza `ValueError` y no se crea el animal. Si alguien construyera a mano `Perro("Toby", 1, 150, "Negro")`, el setter de `peso` también lanzaría `ValueError`. Son reglas **parecidas en los campos básicos**, pero la vía del CRUD es la única que conoce el **catálogo de especies** y los **campos clínicos**.
+
+**Respuesta corta para la defensa:** *«Validamos con funciones porque el enunciado pide CRUD sobre diccionarios; validamos otra vez en los setters porque las clases POO deben encapsular sus atributos. El adaptador une ambas representaciones sin guardar objetos en el JSON.»*
+
 ## 4. Flujos completos de la aplicación
 
 ### Flujo 1. Inicio
@@ -1158,7 +1179,10 @@ Porque el almacenamiento es dict y la ficha POO necesita objetos. El adaptador t
 Haría falta: constante en `ESPECIES`, clase en `modelos.py`, entrada en `CLASES_POR_ESPECIE`. Si es personalizada, basta el diálogo (JSON + `EspeciePersonalizada`).
 
 ### 9. ¿Cómo se evita que los datos sean incorrectos?
-`validar_datos` y los setters de `AnimalRefugio` lanzan `ValueError`; la GUI muestra `messagebox`.
+Hay dos vías (CRUD y setters POO); ver [§3.7](#37-dos-vías-de-validación-funciones-y-setters). Ambas lanzan `ValueError`; la GUI muestra `messagebox`.
+
+### 9b. ¿Por qué se valida con funciones y también con properties/setters?
+Porque el inventario es `dict` (enunciado) y la ficha POO usa objetos. Cada representación valida al entrar en su mundo. Detalle y diferencias: [§3.7](#37-dos-vías-de-validación-funciones-y-setters).
 
 ### 10. ¿Por qué se guarda el inventario en JSON?
 Es legible, simple, sin servidor de BD, adecuado al tamaño del ejercicio. Separado del JSON de especies.
