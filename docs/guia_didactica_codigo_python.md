@@ -229,18 +229,20 @@ Si se eliminara, bastaría con `app.py`; no forma parte del flujo interno de la 
 
 #### A. Identificación
 
-Marca `datos` como **paquete** e reexporta el API CRUD más usado.
+Marca `datos` como **paquete**. Solo contiene el docstring del módulo.
 
 #### B. Imports
 
-- `from datos.constantes import ESPECIES`
-- `from datos.inventario import actualizar_animal, animales_iniciales, borrar_animal, crear_animal, leer_animal`
+Ninguno. No reexporta símbolos ni define `__all__`.
 
-`__all__` lista los nombres públicos al hacer `from datos import *`.
+#### C. Cómo importar
 
-#### C. Definiciones
+La aplicación y los tests importan **submódulos** directamente, por ejemplo:
 
-No define funciones. Solo reexporta. Facilita imports cortos en demos, aunque la app principal suele importar desde submódulos concretos.
+```python
+from datos.inventario import crear_animal, animales_iniciales
+from datos.constantes import ESPECIES
+```
 
 ### 2.4. `datos/constantes.py`
 
@@ -306,7 +308,7 @@ Tipo alias: `Inventario = Dict[int, Dict[str, Any]]` — clave = ID entero; valo
 | `deepcopy` | stdlib `copy` | Copias profundas al leer (evitar mutar el original) |
 | `Any`, `Dict` | `typing` | Anotaciones |
 | `borrar_adjuntos_animal` | proyecto | Borrar carpeta de archivos al eliminar animal |
-| `ESPECIES` | proyecto | Reexportado en `__all__` (compatibilidad) |
+| `ESPECIES` | proyecto | Especies nativas (también listado en `__all__` de este módulo) |
 | `asegurar_campos_clinicos`, `ficha_vacia_clinica` | proyecto | Garantizar campos clínicos |
 | `validar_datos` | proyecto | Validar antes de crear/actualizar |
 
@@ -624,7 +626,11 @@ Demo de polimorfismo para la barra de estado al seleccionar. Usa `info_basica`, 
 
 #### `__init__.py`
 
-Reexporta `validar_datos`.
+Marca el paquete `validaciones` (solo docstring). La API se importa desde el submódulo:
+
+```python
+from validaciones.reglas import validar_datos
+```
 
 #### `validar_datos(datos, *, especie_previa=None) -> Dict`
 
@@ -684,7 +690,11 @@ Escritura también vía temporal + `replace` (evita Permission denied en Windows
 
 #### `interfaz/__init__.py`
 
-Reexporta `GestorAnimales`.
+Marca el paquete `interfaz` (solo docstring). La ventana principal se importa así:
+
+```python
+from interfaz.gestor import GestorAnimales
+```
 
 #### `interfaz/estilos.py`
 
@@ -1064,7 +1074,11 @@ IDs seleccionados o visibles → `asksaveasfilename` → import diferido `export
 
 ### 6.2. `__init__.py`
 
-Marcan paquetes (`datos`, `validaciones`, `interfaz`, `exportacion`, `tests`). Algunos reexportan API.
+Marcan paquetes (`datos`, `validaciones`, `interfaz`, `exportacion`, `tests`).
+
+- `datos`, `validaciones` e `interfaz`: solo docstring; las importaciones van a submódulos (`datos.inventario`, `validaciones.reglas`, `interfaz.gestor`, …).
+- `exportacion`: conserva carga perezosa de `exportar_fichas_pdf` (no exige `fpdf2` al importar el paquete).
+- `tests`: docstring del paquete de pruebas.
 
 ### 6.3. Tests
 
@@ -1439,7 +1453,7 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 | --- | --- | --- |
 | 1 | `app.py` | Arranque GUI |
 | 2 | `main.py` | Alias de arranque |
-| 3 | `datos/__init__.py` | Reexport CRUD |
+| 3 | `datos/__init__.py` | Marca el paquete |
 | 4 | `datos/constantes.py` | Especies y pesos |
 | 5 | `datos/recursos.py` | Logo |
 | 6 | `datos/inventario.py` | CRUD dict |
@@ -1449,11 +1463,11 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 | 10 | `datos/gestor_especies.py` | Catálogo |
 | 11 | `datos/modelos.py` | POO |
 | 12 | `datos/adaptador_poo.py` | Dict↔objeto |
-| 13 | `validaciones/__init__.py` | Reexport |
+| 13 | `validaciones/__init__.py` | Marca el paquete |
 | 14 | `validaciones/reglas.py` | `validar_datos` |
 | 15 | `exportacion/__init__.py` | Lazy PDF |
 | 16 | `exportacion/pdf_fichas.py` | Generador PDF |
-| 17 | `interfaz/__init__.py` | Reexport |
+| 17 | `interfaz/__init__.py` | Marca el paquete |
 | 18 | `interfaz/estilos.py` | Tema |
 | 19 | `interfaz/vista_foto.py` | Miniaturas |
 | 20 | `interfaz/portapapeles.py` | Pegar adjuntos |

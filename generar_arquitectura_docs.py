@@ -136,7 +136,7 @@ print("5. mainloop() espera eventos del usuario")"""
 
 | Archivo | Responsabilidad |
 | --- | --- |
-| `__init__.py` | Identifica el paquete |
+| `__init__.py` | Marca el paquete (solo docstring) |
 | `constantes.py` | Especies nativas y límites de peso |
 | `inventario.py` | Operaciones CRUD sobre diccionarios |
 | `persistencia_inventario.py` | Carga/guarda `inventario.json` (atómico) |
