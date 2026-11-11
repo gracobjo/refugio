@@ -1267,7 +1267,8 @@ No en el flujo GUI habitual; sí en tests. Conviene mencionarlo si preguntan por
 **Dominar:** `ValueError`, keyword-only, catálogo activo vs previa.
 
 ### Nivel 5 — POO
-**Archivos:** `modelos.py`, `test_modelos_poo.py`.  
+**Archivos:** `modelos.py`, `test_modelos_poo.py`.
+
 **Dominar:** ABC, herencia, properties, polimorfismo.
 
 ### Nivel 6 — Adaptador
