@@ -79,6 +79,23 @@ class DialogoFichaClinica(tk.Toplevel):
         if self.al_guardar:
             self.al_guardar()
 
+    def _eliminar_de_lista(
+        self,
+        tabla: ttk.Treeview,
+        clave: str,
+        refrescar: Callable[[], None],
+    ) -> None:
+        """Borra la fila seleccionada de ``registro[clave]`` y refresca la tabla.
+
+        Si no hay selección, no hace nada. Tras borrar, notifica al gestor.
+        """
+        sel = tabla.selection()
+        if not sel:
+            return
+        del self.registro[clave][int(sel[0])]
+        refrescar()
+        self._avisar_cambio()
+
     # --- tratamientos ---
 
     def _montar_tratamientos(self) -> None:
@@ -155,13 +172,9 @@ class DialogoFichaClinica(tk.Toplevel):
         self._avisar_cambio()
 
     def _del_tratamiento(self) -> None:
-        sel = self.tabla_trat.selection()
-        if not sel:
-            return
-        idx = int(sel[0])
-        del self.registro["tratamientos"][idx]
-        self._refrescar_tratamientos()
-        self._avisar_cambio()
+        self._eliminar_de_lista(
+            self.tabla_trat, "tratamientos", self._refrescar_tratamientos
+        )
 
     # --- vacunas ---
 
@@ -237,12 +250,9 @@ class DialogoFichaClinica(tk.Toplevel):
         self._avisar_cambio()
 
     def _del_vacuna(self) -> None:
-        sel = self.tabla_vac.selection()
-        if not sel:
-            return
-        del self.registro["vacunaciones"][int(sel[0])]
-        self._refrescar_vacunas()
-        self._avisar_cambio()
+        self._eliminar_de_lista(
+            self.tabla_vac, "vacunaciones", self._refrescar_vacunas
+        )
 
     # --- documentos ---
 
@@ -372,12 +382,9 @@ class DialogoFichaClinica(tk.Toplevel):
         os.startfile(ruta)  # type: ignore[attr-defined]
 
     def _del_doc(self) -> None:
-        sel = self.tabla_docs.selection()
-        if not sel:
-            return
-        del self.registro["documentos"][int(sel[0])]
-        self._refrescar_docs()
-        self._avisar_cambio()
+        self._eliminar_de_lista(
+            self.tabla_docs, "documentos", self._refrescar_docs
+        )
 
     # --- foto ---
 
