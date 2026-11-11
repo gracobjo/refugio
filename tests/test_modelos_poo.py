@@ -151,7 +151,7 @@ class TestPropertyGettersSetters(unittest.TestCase):
             perro.nombre = "   "
 
 
-class TestDecoradorYClassmethod(unittest.TestCase):
+class TestClassmethodCamposDesdeDict(unittest.TestCase):
     def test_classmethod_campos_desde_dict(self) -> None:
         kwargs = Perro.campos_desde_dict(_ficha())
         self.assertEqual(kwargs["nombre"], "Toby")

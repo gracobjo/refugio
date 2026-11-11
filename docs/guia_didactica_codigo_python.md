@@ -1974,8 +1974,8 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 | `TestPropertyGettersSetters.test_setter_edad_rechaza_fuera_de_rango` | método | (sin docstring) |
 | `TestPropertyGettersSetters.test_setter_peso_rechaza_exceso` | método | (sin docstring) |
 | `TestPropertyGettersSetters.test_setter_nombre_y_color` | método | (sin docstring) |
-| `TestDecoradorYClassmethod` | clase | (sin docstring) |
-| `TestDecoradorYClassmethod.test_classmethod_campos_desde_dict` | método | (sin docstring) |
+| `TestClassmethodCamposDesdeDict` | clase | (sin docstring) |
+| `TestClassmethodCamposDesdeDict.test_classmethod_campos_desde_dict` | método | (sin docstring) |
 | `TestEspeciePersonalizada` | clase | (sin docstring) |
 | `TestEspeciePersonalizada.test_instancia_y_metodos` | método | (sin docstring) |
 | `TestEspeciePersonalizada.test_hereda_validacion_peso` | método | (sin docstring) |
