@@ -596,11 +596,13 @@ class GestorAnimales:
 
     def _tras_cambio_clinico(self, animal_id: int) -> None:
         self._persistir_inventario()
-        if animal_id in self.inventario:
-            self._mostrar_foto_formulario(self.inventario[animal_id].get("foto"))
-        if animal_id in self.inventario and self.tabla.selection():
+        if self.tabla.selection():
             self._seleccionar()
         else:
+            if animal_id in self.inventario:
+                self._mostrar_foto_formulario(
+                    self.inventario[animal_id].get("foto")
+                )
             self.estado_var.set(
                 f"Ficha clínica del registro {animal_id} actualizada."
             )
