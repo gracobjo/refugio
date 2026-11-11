@@ -1,19 +1,25 @@
 # Tarea 1 — Refugio Animal (programa + documentación)
 
+## Introducción
+
+Este proyecto desarrolla una aplicación de gestión de animales para un refugio, con interfaz gráfica en Tkinter, almacenamiento persistente de datos en JSON y soporte para operaciones CRUD, ficha clínica, adjuntos, especies personalizadas y exportación de fichas a PDF.
+
+La aplicación se ejecuta como un sistema completo desde `app.py` y `main.py`, mientras que los notebooks incluidos en la raíz del proyecto sirven como material didáctico y documental y no sustituyen la versión ejecutable del programa.
+
 ## Qué hay aquí
 
 | Pieza | Rol |
 | --- | --- |
 | **Programa ejecutable** | Aplicación Tkinter CRUD |
-| **Documentación** | Markdown, PDF y el cuaderno en la raíz del repo |
+| **Documentación** | Markdown, PDF y material didáctico disponible en la raíz |
 
-El cuaderno `../gestion_animales_tkinter.ipynb` se usa como **guion didáctico y documentación** paso a paso. El programa real son los `.py` de esta carpeta.
+Los notebooks `gestion_animales_tkinter_V5_actualizado.ipynb` y `arquitectura_refugio_animal_v5.ipynb` se usan como **guiones didácticos y documentación** paso a paso. El programa real son los `.py` de esta carpeta.
 
 ### Cuaderno vs programa (`app.py` / `main.py`)
 
-Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la entrega es `tarea1/`.
+Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la entrega ejecutable es `tarea1/`.
 
-| Aspecto | Cuaderno (`gestion_animales_tkinter.ipynb`) | Programa (`python app.py` o `main.py`) |
+| Aspecto | Cuaderno (`gestion_animales_tkinter_V5_actualizado.ipynb`) | Programa (`python app.py` o `main.py`) |
 | --- | --- | --- |
 | Rol | Guion didáctico | Entrega ejecutable |
 | Código | Celdas autocontenidas | Módulos (`interfaz/gestor.py`, …) |
@@ -52,6 +58,16 @@ Prueba de CRUD **sin GUI**:
 ```bash
 python probar_crud.py
 ```
+
+## Validación del proyecto
+
+Se ha verificado el estado actual del proyecto ejecutando la batería de pruebas incluida en el repositorio:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Resultado verificado: 112 pruebas ejecutadas y correctas.
 
 ## Casos de prueba
 
@@ -119,16 +135,18 @@ tarea1/
 │   └── resultados/
 ├── docs/                          # requisitos, CU, UML, manuales, pruebas, PDF arquitectura
 ├── Enunciado_oficial_Tarea_1.pdf
-├── Analisis_gestion_animales.md / Tarea_1.pdf
+├── Analisis_gestion_animales.md
+├── gestion_animales_tkinter_V5_actualizado.ipynb
+├── arquitectura_refugio_animal_v5.ipynb
 ├── generar_pdf.py / generar_arquitectura_docs.py
 ├── refugio.jpg
 └── README.md
 ```
 
-En la raíz del ZIP `entregable_tarea1/` también van:
+En la raíz del proyecto actual también están disponibles:
 
-- `gestion_animales_tkinter.ipynb`
-- `arquitectura_refugio_animal_v3.ipynb`
+- `gestion_animales_tkinter_V5_actualizado.ipynb`
+- `arquitectura_refugio_animal_v5.ipynb`
 
 ### Responsabilidades por módulo
 
@@ -154,11 +172,10 @@ El inventario se manipula en memoria como **diccionarios** y se **persiste** en 
 | [docs/pruebas.md](docs/pruebas.md) | Tests e informes en `tests/resultados/` |
 | [muestras/README.md](muestras/README.md) | Fotos y documentos de prueba |
 | [Analisis_gestion_animales.md](Analisis_gestion_animales.md) | Análisis breve del proyecto |
-| [Tarea_1.pdf](Tarea_1.pdf) | El mismo análisis en PDF |
 | [docs/Arquitectura_Refugio_Animal_v3.pdf](docs/Arquitectura_Refugio_Animal_v3.pdf) | Análisis de arquitectura (PDF) |
 | [Enunciado_oficial_Tarea_1.pdf](Enunciado_oficial_Tarea_1.pdf) | Enunciado |
-| [../gestion_animales_tkinter.ipynb](../gestion_animales_tkinter.ipynb) | Cuaderno didáctico CRUD / POO |
-| [../arquitectura_refugio_animal_v3.ipynb](../arquitectura_refugio_animal_v3.ipynb) | Cuaderno de arquitectura v3 |
+| [gestion_animales_tkinter_V5_actualizado.ipynb](gestion_animales_tkinter_V5_actualizado.ipynb) | Cuaderno didáctico CRUD / POO actualizado |
+| [arquitectura_refugio_animal_v5.ipynb](arquitectura_refugio_animal_v5.ipynb) | Cuaderno de arquitectura v5 |
 
 ## Temario
 
