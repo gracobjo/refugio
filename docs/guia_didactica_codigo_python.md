@@ -655,17 +655,15 @@ from validaciones.reglas import validar_datos
 
 ### 2.14. `exportacion/__init__.py` y `exportacion/pdf_fichas.py`
 
-#### `__init__.py` — carga perezosa
+#### `__init__.py`
+
+Marca el paquete `exportacion` (solo docstring). La API se importa desde el submódulo:
 
 ```python
-def __getattr__(name: str):
-    if name == "exportar_fichas_pdf":
-        from exportacion.pdf_fichas import exportar_fichas_pdf
-        return exportar_fichas_pdf
-    raise AttributeError(...)
+from exportacion.pdf_fichas import exportar_fichas_pdf
 ```
 
-Así la GUI no exige `fpdf2` hasta exportar. `GestorAnimales._exportar_pdf` importa directamente `pdf_fichas` (también perezoso, dentro del método).
+La GUI **no** carga `fpdf2` al arrancar: `GestorAnimales._exportar_pdf` hace ese import **dentro del método** (import diferido), y muestra un diálogo si falta la dependencia.
 
 #### `pdf_fichas.py`
 
@@ -1076,9 +1074,9 @@ IDs seleccionados o visibles → `asksaveasfilename` → import diferido `export
 
 Marcan paquetes (`datos`, `validaciones`, `interfaz`, `exportacion`, `tests`).
 
-- `datos`, `validaciones` e `interfaz`: solo docstring; las importaciones van a submódulos (`datos.inventario`, `validaciones.reglas`, `interfaz.gestor`, …).
-- `exportacion`: conserva carga perezosa de `exportar_fichas_pdf` (no exige `fpdf2` al importar el paquete).
+- `datos`, `validaciones`, `interfaz` y `exportacion`: solo docstring; las importaciones van a submódulos (`datos.inventario`, `validaciones.reglas`, `interfaz.gestor`, `exportacion.pdf_fichas`, …).
 - `tests`: docstring del paquete de pruebas.
+- El aplazamiento de `fpdf2` no está en el `__init__` del paquete: vive en el import local de `GestorAnimales._exportar_pdf`.
 
 ### 6.3. Tests
 
@@ -1131,7 +1129,7 @@ Técnicas: `unittest.TestCase`, `TemporaryDirectory`, `patch` de messagebox/file
 - **`super()`:** acceso a la implementación de la clase base (`EspeciePersonalizada` llama `super().__init__`).
 - **`mainloop()`:** bucle de eventos de Tkinter.
 - **Import relativo:** `from .ficha import ...` (punto = paquete actual). En este proyecto predominan imports absolutos `from datos...`.
-- **Import diferido/perezoso:** import dentro de función/`__getattr__` (PDF, catálogo en validación).
+- **Import diferido/perezoso:** import dentro de una función (p. ej. PDF en `_exportar_pdf`, catálogo en `validar_datos`).
 
 ## 8. Preguntas para preparar la defensa del proyecto
 
@@ -1465,7 +1463,7 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 | 12 | `datos/adaptador_poo.py` | Dict↔objeto |
 | 13 | `validaciones/__init__.py` | Marca el paquete |
 | 14 | `validaciones/reglas.py` | `validar_datos` |
-| 15 | `exportacion/__init__.py` | Lazy PDF |
+| 15 | `exportacion/__init__.py` | Marca el paquete |
 | 16 | `exportacion/pdf_fichas.py` | Generador PDF |
 | 17 | `interfaz/__init__.py` | Marca el paquete |
 | 18 | `interfaz/estilos.py` | Tema |

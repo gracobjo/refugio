@@ -330,7 +330,7 @@ Si se quisiera usar *solo* clases (sin dict):
 | Más campos / otra maquetación | `exportacion/pdf_fichas.py` |
 | Solo selección vs todos los visibles | Handler en `gestor.py` (ya distingue) |
 | Fuente / zoom inicial | Helvetica + `set_display_mode` en el mismo módulo |
-| Dependencia ausente | Import **perezoso** de `fpdf` (evitar romper el arranque GUI) |
+| Dependencia ausente | Import **perezoso** en `GestorAnimales._exportar_pdf` (`from exportacion.pdf_fichas import …`) para no cargar `fpdf2` al arrancar la GUI |
 
 ### 7.13 Internacionalización / textos
 
