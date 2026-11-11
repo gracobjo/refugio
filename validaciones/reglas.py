@@ -21,11 +21,17 @@ def validar_datos(
     """Comprueba los datos del formulario y devuelve un registro limpio.
 
     Incluye campos clínicos opcionales: foto, tratamientos, vacunaciones
-    y documentos. Si no vienen en ``datos``, quedan vacíos.
+    y documentos. Si no vienen en ``datos``, quedan vacíos. La normalización
+    de tratamientos, vacunaciones y documentos se delega en
+    ``datos.ficha`` (``normalizar_tratamientos``, ``normalizar_vacunaciones``
+    y ``normalizar_documentos``).
 
     La especie debe estar en el catálogo activo. Si ``especie_previa`` coincide
     con la especie del registro (p. ej. al actualizar un animal de una especie
     personalizada ya desactivada), se admite para no romper registros antiguos.
+
+    La edad debe ser un ``int`` real: en Python ``bool`` es subclase de
+    ``int``, por lo que los booleanos no se aceptan como edad.
 
     Raises:
         ValueError: Si falta un campo obligatorio o un valor no es válido.
