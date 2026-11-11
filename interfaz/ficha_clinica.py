@@ -96,6 +96,22 @@ class DialogoFichaClinica(tk.Toplevel):
         refrescar()
         self._avisar_cambio()
 
+    def _refrescar_lista(
+        self,
+        tabla: ttk.Treeview,
+        clave: str,
+        campos: tuple[str, ...],
+    ) -> None:
+        """Vacía ``tabla`` y la rellena con ``registro[clave]`` según ``campos``."""
+        tabla.delete(*tabla.get_children())
+        for i, item in enumerate(self.registro[clave]):
+            tabla.insert(
+                "",
+                "end",
+                iid=str(i),
+                values=tuple(item[campo] for campo in campos),
+            )
+
     # --- tratamientos ---
 
     def _montar_tratamientos(self) -> None:
@@ -141,14 +157,11 @@ class DialogoFichaClinica(tk.Toplevel):
         self._refrescar_tratamientos()
 
     def _refrescar_tratamientos(self) -> None:
-        self.tabla_trat.delete(*self.tabla_trat.get_children())
-        for i, item in enumerate(self.registro["tratamientos"]):
-            self.tabla_trat.insert(
-                "",
-                "end",
-                iid=str(i),
-                values=(item["fecha"], item["descripcion"], item["veterinario"]),
-            )
+        self._refrescar_lista(
+            self.tabla_trat,
+            "tratamientos",
+            ("fecha", "descripcion", "veterinario"),
+        )
 
     def _add_tratamiento(self) -> None:
         desc = self.trat_desc.get().strip()
@@ -221,14 +234,11 @@ class DialogoFichaClinica(tk.Toplevel):
         self._refrescar_vacunas()
 
     def _refrescar_vacunas(self) -> None:
-        self.tabla_vac.delete(*self.tabla_vac.get_children())
-        for i, item in enumerate(self.registro["vacunaciones"]):
-            self.tabla_vac.insert(
-                "",
-                "end",
-                iid=str(i),
-                values=(item["fecha"], item["vacuna"], item["proxima"]),
-            )
+        self._refrescar_lista(
+            self.tabla_vac,
+            "vacunaciones",
+            ("fecha", "vacuna", "proxima"),
+        )
 
     def _add_vacuna(self) -> None:
         nombre = self.vac_nombre.get().strip()
@@ -294,14 +304,11 @@ class DialogoFichaClinica(tk.Toplevel):
         self._refrescar_docs()
 
     def _refrescar_docs(self) -> None:
-        self.tabla_docs.delete(*self.tabla_docs.get_children())
-        for i, item in enumerate(self.registro["documentos"]):
-            self.tabla_docs.insert(
-                "",
-                "end",
-                iid=str(i),
-                values=(item["nombre"], item["fecha"], item["ruta"]),
-            )
+        self._refrescar_lista(
+            self.tabla_docs,
+            "documentos",
+            ("nombre", "fecha", "ruta"),
+        )
 
     def _importar_doc(self) -> None:
         inicial = (
