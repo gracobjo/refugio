@@ -1103,7 +1103,7 @@ Marcan paquetes (`datos`, `validaciones`, `interfaz`, `exportacion`, `tests`).
 
 | Módulo | Qué comprueba |
 | --- | --- |
-| `test_datos.py` | CRUD inventario |
+| `test_inventario.py` | CRUD inventario |
 | `test_validaciones.py` | `validar_datos`, especies activas/desactivadas |
 | `test_modelos_poo.py` | ABC, polimorfismo, properties, adaptador, personalizadas |
 | `test_gestor_especies.py` | Catálogo JSON, reglas de alta/baja |
@@ -1258,7 +1258,8 @@ No en el flujo GUI habitual; sí en tests. Conviene mencionarlo si preguntan por
 **Dominar:** dict anidados, IDs, campos clínicos.
 
 ### Nivel 3 — CRUD
-**Archivos:** `inventario.py` completo, `probar_crud.py`, `test_datos.py`.  
+**Archivos:** `inventario.py` completo, `probar_crud.py`, `test_inventario.py`.
+
 **Dominar:** create/read/update/delete, `deepcopy`, `max(..., default=0)`.
 
 ### Nivel 4 — Validación
@@ -1304,7 +1305,7 @@ Registra un animal nuevo en el inventario en memoria. No pinta la tabla ni guard
 **2. ¿Cuándo se ejecuta?**
 
 - Desde `GestorAnimales._crear` al pulsar «Crear».
-- Desde `probar_crud.py` y tests (`test_datos`, `test_ficha_clinica`, `test_persistencia_inventario`).
+- Desde `probar_crud.py` y tests (`test_inventario`, `test_ficha_clinica`, `test_persistencia_inventario`).
 
 **3. Parámetros**
 
@@ -1502,7 +1503,7 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 | 27 | `generar_arquitectura_docs.py` | Notebook+PDF arch. |
 | 28 | `muestras/generar_muestras.py` | Material muestra |
 | 29 | `tests/__init__.py` | Paquete tests |
-| 30 | `tests/test_datos.py` | Tests CRUD |
+| 30 | `tests/test_inventario.py` | Tests CRUD |
 | 31 | `tests/test_validaciones.py` | Tests validación |
 | 32 | `tests/test_modelos_poo.py` | Tests POO |
 | 33 | `tests/test_gestor_especies.py` | Tests catálogo |
@@ -1840,7 +1841,7 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 | --- | --- | --- |
 | `main` | función | (sin docstring) |
 
-### Inventario de `tests/test_datos.py`
+### Inventario de `tests/test_inventario.py`
 | Cualificador | Tipo | Docstring / nota |
 | --- | --- | --- |
 | `TestInventario` | clase | (sin docstring) |

@@ -206,7 +206,7 @@ Casos típicos de extensión o cambio. Para cada uno: **dónde** y **qué no olv
 | Iniciales / CRUD si hace falta default | `datos/inventario.py` |
 | Formulario + variables + tabla | `interfaz/gestor.py` |
 | PDF | `exportacion/pdf_fichas.py` |
-| Tests | `tests/test_validaciones.py`, `test_datos.py`, `test_interfaz.py` |
+| Tests | `tests/test_validaciones.py`, `test_inventario.py`, `test_interfaz.py` |
 | Docs | `requisitos.md` (RF/RN), `manual_usuario.md`, `uml.md`, casos de uso |
 
 Si el campo es solo clínico (no va en el formulario principal): `ficha.py` + `ficha_clinica.py` (+ PDF).
@@ -360,7 +360,7 @@ python ejecutar_tests.py
 | Cambio | Tests mínimos |
 | --- | --- |
 | Regla nueva | `test_validaciones` (caso ok + caso error) |
-| CRUD | `test_datos` |
+| CRUD | `test_inventario` |
 | Widget / flujo | `test_interfaz` |
 | Clínica / 5 MB | `test_ficha_clinica` |
 | PDF | `test_exportacion_pdf` |

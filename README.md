@@ -80,7 +80,7 @@ python -m unittest discover -s tarea1/tests -v
 | Archivo | Qué cubre |
 | --- | --- |
 | `tests/test_interfaz.py` | GUI: CRUD, filtros, diálogos |
-| `tests/test_datos.py` | Inventario y CRUD |
+| `tests/test_inventario.py` | Inventario y CRUD |
 | `tests/test_validaciones.py` | `validar_datos()` |
 | `tests/test_exportacion_pdf.py` | PDF de fichas |
 | `tests/test_ficha_clinica.py` | Tratamientos, vacunas, docs, foto |
@@ -112,7 +112,7 @@ tarea1/
 ├── adjuntos/                      # plantilla vacía en el entregable
 ├── muestras/                      # fotos y documentos de prueba
 ├── tests/
-│   ├── test_datos.py / test_validaciones.py / test_persistencia_inventario.py
+│   ├── test_inventario.py / test_validaciones.py / test_persistencia_inventario.py
 │   ├── test_modelos_poo.py / test_gestor_especies.py
 │   ├── test_interfaz.py / test_ficha_clinica.py
 │   ├── test_portapapeles.py / test_exportacion_pdf.py
