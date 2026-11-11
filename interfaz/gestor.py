@@ -15,7 +15,6 @@ from datos.inventario import (
     crear_animal,
     leer_animal,
 )
-from datos.ficha import asegurar_campos_clinicos
 from datos.persistencia_inventario import guardar_inventario
 from datos.recursos import ruta_logo_refugio
 from interfaz.dialogo_especies import DialogoGestionEspecies
@@ -559,7 +558,6 @@ class GestorAnimales:
         animal_id = self._id_seleccionado()
         if animal_id is None:
             return
-        asegurar_campos_clinicos(self.inventario[animal_id])
         DialogoFichaClinica(
             self.raiz,
             animal_id,
