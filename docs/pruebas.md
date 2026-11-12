@@ -6,13 +6,13 @@ Los tests viven en `tarea1/tests/` y usan el módulo estándar **`unittest`**.
 
 | Archivo | Cobertura |
 | --- | --- |
-| `test_datos.py` | Inventario y CRUD |
+| `test_inventario.py` | Inventario y CRUD |
 | `test_persistencia_inventario.py` | Carga/guarda `inventario.json` |
 | `test_validaciones.py` | `validar_datos()` |
 | `test_interfaz.py` | GUI (`GestorAnimales`): CRUD, filtros, diálogos |
 | `test_exportacion_pdf.py` | Exportación PDF y botón Exportar |
 | `test_ficha_clinica.py` | Tratamientos, vacunas, documentos, foto |
-| `test_modelos_poo.py` | Herencia ABC, `@property`, decoradores, adaptador dict↔objeto |
+| `test_modelos_poo.py` | Herencia ABC, `@property`, adaptador dict↔objeto |
 | `test_gestor_especies.py` | Catálogo dinámico y persistencia de especies |
 | `test_portapapeles.py` | Lectura del portapapeles (archivos / texto) |
 

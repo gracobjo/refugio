@@ -15,7 +15,6 @@ from datos.inventario import (
     crear_animal,
     leer_animal,
 )
-from datos.ficha import asegurar_campos_clinicos
 from datos.persistencia_inventario import guardar_inventario
 from datos.recursos import ruta_logo_refugio
 from interfaz.dialogo_especies import DialogoGestionEspecies
@@ -72,7 +71,19 @@ class GestorAnimales:
         """Construye el formulario, los filtros y la tabla."""
         contenedor = ttk.Frame(self.raiz, padding=12)
         contenedor.pack(fill="both", expand=True)
+        self._montar_cabecera(contenedor)
+        self._montar_formulario(contenedor)
+        self._montar_filtros(contenedor)
+        self._montar_ficha_poo(contenedor)
+        self._montar_tabla(contenedor)
+        ttk.Label(
+            contenedor,
+            textvariable=self.estado_var,
+            style="Estado.TLabel",
+        ).pack(anchor="w", pady=(8, 0))
 
+    def _montar_cabecera(self, contenedor: ttk.Frame) -> None:
+        """Logo y título de la ventana principal."""
         cabecera = ttk.Frame(contenedor)
         cabecera.pack(fill="x", pady=(0, 10))
         self.lbl_logo = ttk.Label(cabecera)
@@ -89,6 +100,8 @@ class GestorAnimales:
             style="Subtitulo.TLabel",
         ).pack(anchor="w")
 
+    def _montar_formulario(self, contenedor: ttk.Frame) -> None:
+        """Formulario de datos, panel de foto y botones de acción."""
         zona_datos = ttk.Frame(contenedor)
         zona_datos.pack(fill="x", pady=(0, 10))
         zona_datos.columnconfigure(0, weight=1)
@@ -189,6 +202,8 @@ class GestorAnimales:
             command=self._abrir_gestion_especies,
         ).pack(side="left", padx=3)
 
+    def _montar_filtros(self, contenedor: ttk.Frame) -> None:
+        """Búsqueda por nombre y filtro por especie."""
         filtros = ttk.LabelFrame(contenedor, text="Buscar y filtrar", padding=8)
         filtros.pack(fill="x", pady=(0, 8))
         ttk.Label(filtros, text="Nombre:").pack(side="left", padx=(0, 5))
@@ -209,6 +224,8 @@ class GestorAnimales:
             lambda evento: self._actualizar_tabla(),
         )
 
+    def _montar_ficha_poo(self, contenedor: ttk.Frame) -> None:
+        """Panel de ficha polimórfica del animal seleccionado."""
         ficha = ttk.LabelFrame(
             contenedor,
             text="Información del animal seleccionado",
@@ -290,6 +307,8 @@ class GestorAnimales:
         self.lbl_ficha_alimentacion = self.txt_ficha_alimentacion
         self.lbl_ficha_cuidados = self.txt_ficha_cuidados
 
+    def _montar_tabla(self, contenedor: ttk.Frame) -> None:
+        """Treeview del inventario con barras de desplazamiento."""
         tabla_marco = ttk.Frame(contenedor)
         tabla_marco.pack(fill="both", expand=True)
         columnas = (
@@ -345,12 +364,6 @@ class GestorAnimales:
         tabla_marco.rowconfigure(0, weight=1)
         tabla_marco.columnconfigure(0, weight=1)
         self.tabla.bind("<<TreeviewSelect>>", self._seleccionar)
-
-        ttk.Label(
-            contenedor,
-            textvariable=self.estado_var,
-            style="Estado.TLabel",
-        ).pack(anchor="w", pady=(8, 0))
 
     def _datos_del_formulario(self) -> Dict[str, Any]:
         """Lee los controles y convierte edad y peso a valores numéricos."""
@@ -545,7 +558,6 @@ class GestorAnimales:
         animal_id = self._id_seleccionado()
         if animal_id is None:
             return
-        asegurar_campos_clinicos(self.inventario[animal_id])
         DialogoFichaClinica(
             self.raiz,
             animal_id,
@@ -582,11 +594,13 @@ class GestorAnimales:
 
     def _tras_cambio_clinico(self, animal_id: int) -> None:
         self._persistir_inventario()
-        if animal_id in self.inventario:
-            self._mostrar_foto_formulario(self.inventario[animal_id].get("foto"))
-        if animal_id in self.inventario and self.tabla.selection():
+        if self.tabla.selection():
             self._seleccionar()
         else:
+            if animal_id in self.inventario:
+                self._mostrar_foto_formulario(
+                    self.inventario[animal_id].get("foto")
+                )
             self.estado_var.set(
                 f"Ficha clínica del registro {animal_id} actualizada."
             )

@@ -1,17 +1,56 @@
-# Tarea 1 — Análisis del proyecto
+# Tarea 1 — Análisis formal del proyecto
 
 **Programa ejecutable:** `app.py` (`datos/`, `validaciones/`, `interfaz/`, `exportacion/`)  
 **Documentación formal:** carpeta [`docs/`](docs/README.md) (requisitos RF/RNF, CU, UML, manuales, pruebas)  
-**Guía y cuaderno:** este Markdown/PDF + `../gestion_animales_tkinter.ipynb`  
+**Guías y cuadernos:** este documento + notebooks actualizados en la raíz del proyecto (`gestion_animales_tkinter_V5_actualizado.ipynb`, `arquitectura_refugio_animal_v5.ipynb`)  
 **Enunciado oficial:** `Enunciado_oficial_Tarea_1.pdf`  
 **Fecha de entrega (enunciado):** 12 de noviembre de 2026  
 
-Este documento resume el trabajo: qué hace, cómo está organizado, qué del temario se aplica y cómo abordar cambios de refactorización.
+Este documento presenta un análisis formal del sistema desarrollado, describiendo su alcance funcional, diseño de componentes, relación con el enunciado, uso del temario de la asignatura y criterios de mantenimiento. La versión revisada refleja el estado actual del repositorio y no se limita a una interpretación preliminar del proyecto.
 
-**Arranque (entrega):** `cd tarea1` → `python app.py` (o `python main.py`)  
-**Extras respecto al enunciado mínimo:** ficha clínica, foto/documentos (importar/pegar, máx. 5 MB), exportación PDF, ficha POO en la GUI, **especies personalizadas** (JSON + `EspeciePersonalizada`), **persistencia del inventario** (`inventario.json`), tests con informe en disco.
+**Arranque de la aplicación:** `cd tarea1` → `python app.py` (o `python main.py`)  
+**Extras respecto al enunciado mínimo:** ficha clínica, foto/documentos (importar/pegar, máx. 5 MB), exportación PDF, ficha POO en la GUI, **especies personalizadas** (JSON + `EspeciePersonalizada`), **persistencia del inventario** (`inventario.json`) y tests con informe en disco.
 
-**Cuaderno ≠ programa.** El `.ipynb` es un guion didáctico (CRUD + ficha POO con scrollbars + demo de `EspeciePersonalizada`). La ventana completa (foto, clínica, PDF, *Gestionar especies*, estilos) solo sale de `tarea1/app.py`. Ver tabla en [README.md](README.md#cuaderno-vs-programa-apppy--mainpy).
+**Cuaderno ≠ programa.** El notebook `.ipynb` cumple un propósito didáctico (CRUD + ficha POO con scrollbars + demo de `EspeciePersonalizada`). La aplicación de uso real y completa, con foto, clínica, PDF, *Gestionar especies* y estilos, se ejecuta desde `tarea1/app.py`. El repositorio actual incluye versiones V5 actualizadas y la diferencia entre cuaderno y aplicación queda documentada en [README.md](README.md).
+
+**Estado verificado:** la suite de pruebas del proyecto se ejecuta correctamente con `python -m unittest discover -s tests -v` y finaliza con resultado satisfactorio (112 tests, OK).
+
+---
+
+## Resumen ejecutivo
+
+La aplicación desarrollada consiste en un gestor de animales de refugio con interfaz gráfica en Tkinter, basado en un inventario de tipo diccionario persistido en JSON. El sistema permite crear, consultar, actualizar y eliminar animales, así como gestionar información clínica, adjuntos físicos, imágenes y exportación de fichas en formato PDF.
+
+Además, el proyecto incorpora una capa de programación orientada a objetos para representar el comportamiento específico de cada especie, manteniendo la estructura del dominio en diccionarios, tal y como exige el enunciado. Esta separación entre modelo de datos, validación y presentación permite un diseño modular, reutilizable y fácilmente extensible.
+
+En términos de arquitectura, el proyecto se organiza en capas funcionales: datos, validación, interfaz gráfica y exportación. La capa de persistencia guarda el inventario principal y el catálogo de especies personalizadas en archivos JSON independientes, evitando mezclar dos tipos de información distintos pero relacionados.
+
+## Objetivos del proyecto
+
+El sistema tiene como objetivo principal proporcionar una herramienta de gestión de animales en un refugio, con capacidad para:
+
+- registrar animales con datos básicos y clínicos;
+- mantener la información actualizada mediante operaciones CRUD;
+- visualizar el inventario en una interfaz gráfica clara y operativa;
+- gestionar especies nativas y personalizadas sin reescribir código Python;
+- conservar la información entre ejecuciones mediante persistencia JSON;
+- exportar fichas de animales en formato PDF para su uso documental;
+- servir como demostración del uso de POO y de interfaces gráficas en la asignatura.
+
+## Alcance funcional y arquitectura general
+
+El proyecto implementa una arquitectura por capas, con separación clara entre lógica de dominio, validación, interfaz de usuario y exportación de datos. La capa central está formada por el inventario de animales y las funciones de acceso al mismo; la capa de validación protege la consistencia de los registros; la capa de interfaz presenta la información al usuario y recoge sus entradas; la capa de exportación genera informes que pueden usarse como documentación del animal.
+
+La arquitectura refleja una buena práctica docente: la lógica del CRUD no depende de la GUI, lo que facilita la comprobación automática, la reutilización y la extensibilidad del sistema.
+
+## 0. Estado del proyecto y validación
+
+Se ha verificado el estado actual del repositorio mediante ejecución directa de la batería de pruebas del proyecto. La comprobación realizada con la herramienta estándar de Python confirma que el sistema funciona de manera consistente en la versión actual.
+
+- Comando ejecutado: `python -m unittest discover -s tests -v`
+- Resultado: 112 pruebas ejecutadas, todas correctas.
+
+Este dato es relevante porque permite contrastar el análisis documental con la implementación efectiva, evitando que el documento quede desalineado respecto al código real del proyecto.
 
 ---
 
@@ -19,7 +58,7 @@ Este documento resume el trabajo: qué hace, cómo está organizado, qué del te
 
 | Requisito del enunciado | Cómo se cumple en el proyecto |
 | --- | --- |
-| Temática libre | Refugio / inventario de animales (perro, gato, loro) |
+| Temática libre | Refugio / inventario de animales (Perro, Gato, Conejo, Loro, Hámster) |
 | Al menos un diccionario complejo | `animales`: ID → ficha con varios campos |
 | Funcionalidades CRUD | Crear, leer, actualizar y borrar |
 | Interfaz con `tkinter` | Clase `GestorAnimales` + widgets `tk` / `ttk` |
@@ -59,12 +98,12 @@ El enunciado exige **diccionario + CRUD + Tkinter**. La ficha vive en un `dict`;
 | Diccionarios | Inventario `dict[int, dict]`; ID = identidad |
 | Herencia + ABC | `AnimalRefugio` (abstracta) → `Perro`, `Gato`, `Conejo`, `Loro`, `Hamster` en `datos/modelos.py` |
 | Getters / setters | `@property` + `@xxx.setter` (nombre, edad, peso, color, observaciones) |
-| Decoradores | `@abstractmethod`, `@property`, `@classmethod`, y propio `@cuenta_usos` en `datos/decoradores.py` |
+| Decoradores | `@abstractmethod`, `@property`, `@classmethod` |
 | Polimorfismo | `hacer_sonido()` / `tipo_alimentacion()` / `cuidados_especificos()`; la GUI muestra `generar_ficha()` sin `if` por especie |
 | Puente dict ↔ objeto | `datos/adaptador_poo.py` (`registro_a_animal`, `animal_a_campos`) |
 | Ficha en Tkinter | Panel «Información del animal seleccionado»: dict → adaptador → objeto → `generar_ficha()`; scrollbars en comportamiento / alimentación / cuidados |
 | Especies dinámicas | Nativas (clases fijas) + personalizadas (`EspeciePersonalizada` + `especies_personalizadas.json`) vía *Gestionar especies* |
-| Validación procedural | `validar_datos()` sigue siendo la puerta del CRUD (coherente con los setters) |
+| Validación en dos vías | `validar_datos()` protege el CRUD (`dict`); los setters de `AnimalRefugio` encapsulan el objeto POO (detalle en la guía didáctica §3.7) |
 
 **Idea clave:** *«El CRUD trabaja con diccionarios, como pide el enunciado; la herencia y las properties son una capa didáctica conectada por un adaptador.»*
 
@@ -88,7 +127,8 @@ El enunciado exige **diccionario + CRUD + Tkinter**. La ficha vive en un `dict`;
 ## 4. Sección 1 — Datos iniciales
 
 ```python
-ESPECIES = ("Perro", "Gato", "Loro")
+ESPECIES = ("Perro", "Gato", "Conejo", "Loro", "Hámster")
+ESPECIES_NATIVAS = ESPECIES  # alias: las nativas son exactamente estas cinco
 
 animales = {
     1: {"nombre": "Luna", "especie": "Perro", "edad": 4, "peso": 18.5, ...},
@@ -98,7 +138,8 @@ animales = {
 
 **Qué hace**
 
-- `ESPECIES` alimenta el `Combobox` del formulario y el filtro.
+- `ESPECIES` / `ESPECIES_NATIVAS` (definidas en `datos/constantes.py`) son la tupla de las cinco especies con clase Python propia.  
+  El catálogo completo que ve el usuario (nativas + personalizadas activas) lo gestiona `datos/gestor_especies.py` a través de `CatalogoEspecies.nombres_activos_para_alta()`.
 - `animales` usa un **ID numérico** como clave y un diccionario como valor.
 
 **¿Por qué un diccionario y no una lista?**
@@ -121,18 +162,21 @@ Corazón lógico del proyecto, **separado de la interfaz**.
 ### `validar_datos(datos)`
 
 1. Limpia espacios con `.strip()`.
-2. Obliga nombre, especie (de `ESPECIES`) y color.
+2. Obliga nombre, especie (del catálogo activo vía `get_catalogo()`) y color.
 3. Edad: entero entre 0 y 30 (rechaza `bool`).
 4. Peso: `float` finito entre `PESO_MIN_KG` (0.01) y `PESO_MAX_KG` (100) kg.
 5. Si falla → `ValueError` con mensaje claro.
-6. Si va bien → diccionario limpio y normalizado.
+6. Si va bien → diccionario limpio y normalizado (incluye campos clínicos: `foto`, `tratamientos`, `vacunaciones`, `documentos`).
+
+La validación de especie consulta `catalogo.especie_permitida_en_alta(especie)`. Al actualizar un registro existente, también se admite la misma especie aunque esté desactivada (`especie_previa`), para no romper registros ya guardados.
 
 ### `crear_animal` / `leer_animal` / `actualizar_animal` / `borrar_animal`
 
 - Reciben el inventario como **argumento** (no dependen de una global oculta).
-- `leer_animal` usa `.copy()` para no modificar el registro original por accidente.
+- `leer_animal` usa `deepcopy` para devolver una copia profunda y no modificar el registro original.
 - `crear_animal` calcula `max(inventario, default=0) + 1` → ID único.
-- `borrar_animal` usa `.pop()` y devuelve el registro eliminado.
+- `borrar_animal` usa `.pop()`, llama a `borrar_adjuntos_animal` para limpiar archivos del disco y devuelve el registro eliminado.
+- `actualizar_animal` fusiona los datos nuevos con los campos clínicos existentes antes de validar, para que editar los datos básicos no borre tratamientos o vacunaciones.
 
 **Punto fuerte:** estas funciones se pueden probar sin abrir ninguna ventana (separación de responsabilidades).
 
@@ -154,20 +198,31 @@ Es una mini prueba manual. En un proyecto real se usaría `unittest` o `pytest`;
 
 ```python
 self.nombre_var = tk.StringVar()
-self.especie_var = tk.StringVar(value=ESPECIES[0])
+especies_alta = self.catalogo.nombres_activos_para_alta()
+self.especie_var = tk.StringVar(value=especies_alta[0])
 ```
 
 Enlazan widgets y datos: al escribir en un `Entry`, la variable se actualiza; al hacer `set()`, el campo se rellena.
 
-### 7.2 Layout (`_crear_controles`)
+El valor inicial de `especie_var` procede de `CatalogoEspecies.nombres_activos_para_alta()`, que devuelve las cinco especies nativas más las personalizadas activas que haya en `especies_personalizadas.json`.
 
-Tres bloques verticales con `pack()`:
+### 7.2 Layout (_crear_controles y métodos _montar_*)
 
-1. Formulario (`LabelFrame` “Datos del animal”) → `grid()` interno.
-2. Filtros (`LabelFrame` “Buscar y filtrar”).
-3. Tabla (`Treeview` + scrollbars).
+_crear_controles es el único método que llama el constructor. En lugar de construir toda la interfaz en un bloque único, delega cada zona a un método auxiliar privado con nombre _montar_*. Esto hace que _crear_controles sea un índice legible de la pantalla y que cada método sea responsable de una sola zona:
 
-**Regla de oro:** no mezclar `pack()` y `grid()` en el **mismo** contenedor. Aquí el padre usa `pack` y cada `LabelFrame` interno usa `grid`.
+| Método auxiliar | Zona que construye |
+| --- | --- |
+| _montar_cabecera(contenedor) | Logo del refugio (efugio.png/.jpg) y títulos |
+| _montar_formulario(contenedor) | LabelFrame «Datos del animal»: campos Entry, Combobox, Text de observaciones, panel de foto y botones de acción (Crear, Actualizar, Borrar, Limpiar, Exportar PDF, Ficha clínica / adjuntos, Gestionar especies) |
+| _montar_filtros(contenedor) | LabelFrame «Buscar y filtrar»: campo de búsqueda por nombre y Combobox de especie |
+| _montar_ficha_poo(contenedor) | LabelFrame «Información del animal seleccionado»: bloques de datos generales, comportamiento, alimentación y cuidados (con scrollbars) |
+| _montar_tabla(contenedor) | Treeview del inventario con barras de desplazamiento vertical y horizontal |
+
+Todos los bloques usan pack() para apilarse verticalmente en el contenedor principal. Los LabelFrame internos usan grid() para alinear sus controles en cuadrícula.
+
+**Regla de oro:** no mezclar pack() y grid() en el **mismo** contenedor. Aquí el padre usa pack y cada LabelFrame interno usa grid.
+
+**Ventaja de esta organización:** encontrar o modificar una zona concreta de la GUI no requiere leer todo el método; basta con localizar el _montar_ correspondiente. Los tests también pueden verificar zonas de forma independiente.
 
 ### 7.3 Treeview
 
@@ -222,9 +277,18 @@ Crea la ventana, pasa el inventario y arranca el bucle de eventos.
 
 ## 9. Preguntas de refactorización (y respuestas)
 
-### 1. ¿Cómo añadirías la especie “Conejo”?
+### 1. ¿Cómo añadirías una especie personalizada?
 
-Añadir `"Conejo"` a la tupla `ESPECIES`. Combobox y filtro la leen de ahí; no hace falta reescribir la GUI.
+Conejo es ya una especie nativa en V5: está en `ESPECIES = ("Perro", "Gato", "Conejo", "Loro", "Hámster")` (`datos/constantes.py`) y tiene su propia clase Python en `datos/modelos.py`. No se puede volver a crear como personalizada.
+
+Si queremos añadir **una especie nueva** (p. ej. Tortuga), se hace sin tocar el código Python, a través de la funcionalidad de gestión de especies de la interfaz:
+
+1. En la GUI, pulsar **Gestionar especies** → **Añadir**. El diálogo pide nombre, descripción del sonido, tipo de alimentación y cuidados.
+2. `CatalogoEspecies.anadir()` (`datos/gestor_especies.py`) guarda el registro en `datos/especies_personalizadas.json` (escritura atómica).
+3. `registro_a_animal()` (`datos/adaptador_poo.py`) detecta que la especie no está en `CLASES_POR_ESPECIE` y construye un objeto `EspeciePersonalizada` (`datos/modelos.py`) con los atributos que vienen del catálogo, usando el mismo contrato `AnimalRefugio` que las nativas.
+4. Los combos de alta y filtro se refrescan automáticamente mediante `_refrescar_desplegables_especies()`.
+
+Desde ese momento la especie personalizada aparece en el `Combobox` del formulario, acepta registros y genera ficha POO. No es necesario tocar ningún archivo Python.
 
 ### 2. ¿Cómo guardar datos entre sesiones?
 
@@ -250,17 +314,24 @@ Ya está hecho en `tarea1/`:
 
 Ejecución: `python app.py` desde `tarea1/`.
 
-### 4. ¿Cómo añadirías el campo “chip” (sí/no)?
+### 4. ¿Cómo añadirías el campo "chip" (sí/no)?
 
-1. Añadirlo a cada registro.  
-2. Validarlo en `validar_datos`.  
-3. `ttk.Checkbutton` + `BooleanVar`.  
-4. Incluirlo en columnas del `Treeview`.  
-5. Actualizar `_seleccionar` y `_datos_del_formulario`.
+Actualmente el campo **chip** no existe en el proyecto: es un cambio hipotético para ilustrar qué puntos del código habría que tocar.
+
+**Lo que ya existe y se vería afectado:**
+
+| Punto afectado | Qué habría que hacer |
+| --- | --- |
+| `validaciones/reglas.py` → `validar_datos()` | Añadir la lectura y validación del campo `chip` (`bool`); incluirlo en el diccionario limpio que devuelve la función |
+| Formulario (`_montar_formulario` en `interfaz/gestor.py`) | Añadir `ttk.Checkbutton` enlazado a un `BooleanVar`; actualizar `_datos_del_formulario` y `_seleccionar` |
+| Tabla `Treeview` (`_montar_tabla`) | Incluir `chip` en la tupla `columnas` y en `encabezados` / `anchos` |
+| Ficha POO (`generar_ficha()` en `datos/modelos.py`) | Si se quiere mostrar el chip en la ficha POO, añadirlo en la sección `generales` de `AnimalRefugio.generar_ficha()` |
+| Persistencia | El campo se guarda automáticamente en `datos/inventario.json` porque `guardar_inventario` serializa el `dict` completo; solo habría que añadir `chip` a `asegurar_campos_clinicos` (`datos/ficha.py`) para garantizar retrocompatibilidad con registros antiguos |
+| Tests | Actualizar `tests/test_validaciones.py` y `tests/test_datos.py` para cubrir los casos con/sin chip |
 
 ### 5. ¿Por qué el CRUD no usa solo clases?
 
-El enunciado pide **diccionarios**. Por eso el inventario sigue siendo `dict`. Las clases (`AnimalRefugio` y subclases) existen en `datos/modelos.py` con herencia, `@property` y decoradores; el adaptador las construye cuando hace falta (p. ej. resumen polimórfico en la GUI).
+El enunciado pide **diccionarios**. Por eso el inventario sigue siendo `dict`. Las clases (`AnimalRefugio` y subclases) existen en `datos/modelos.py` con herencia y `@property`; el adaptador las construye cuando hace falta (p. ej. resumen polimórfico en la GUI).
 
 ### 6. ¿Qué pasa si dos animales tienen el mismo nombre?
 
@@ -302,7 +373,30 @@ y en `_confirmar_salida` un `askyesno`.
 
 ---
 
-## 11. Checklist rápido de entrega
+## 11. Conclusiones
+
+El proyecto desarrollado cumple plenamente el objetivo de integrar en una sola aplicación una gestión CRUD de animales de refugio, con interfaz de usuario, persistencia de datos, validación, tratamiento de adjuntos y exportación de información. La solución se enmarca correctamente dentro del enunciado de la asignatura, ya que combina un almacenamiento basado en diccionarios con una capa POO demostrativa y una GUI desarrollada en Tkinter.
+
+La principal fortaleza del sistema es su organización modular. La separación entre inventario, validación, interfaz y exportación permite ampliar el proyecto sin afectar a las demás capas. Asimismo, la gestión de especies personalizadas demuestra una capacidad de extensión real, evitando un diseño rígido y reforzando la reutilización del código.
+
+Otra aportación notable es la persistencia del inventario y de las especies personalizadas en JSON, lo que convierte la aplicación en una herramienta útil más allá del entorno didáctico. El uso de validaciones concretas, mensajes de error controlados y funciones puras de manipulación del inventario contribuye a la robustez general del sistema.
+
+En síntesis, el proyecto representa una solución completa y bien estructurada para la gestión de un refugio animal, con un equilibrio adecuado entre simplicidad didáctica y funcionalidad real. Su carácter modular, su dependencia de diccionarios frente a bases de datos relacionales y su conexión con POO y Tkinter lo convierten en un ejemplo muy apropiado para la entrega de la asignatura.
+
+---
+
+## 12. Checklist rápido de entrega
+
+- [ ] Ejecutar la aplicación principal desde `python app.py` y comprobar CRUD, filtros, ficha clínica, importación de adjuntos y exportación PDF.
+- [ ] Confirmar que el sistema arranca correctamente desde `main.py` como alias de ejecución.
+- [ ] Ejecutar la batería de pruebas del proyecto y revisar el informe generado en `tests/resultados/`.
+- [ ] Verificar que el inventario se persiste en `datos/inventario.json` y que las especies personalizadas quedan registradas en `datos/especies_personalizadas.json`.
+- [ ] Comprobar la diferencia entre cuaderno didáctico y aplicación completa documentada en `README.md`.
+- [ ] Revisar la documentación formal en `docs/` para requisitos, manuales y pruebas.
+- [ ] Señalar las capas clave del sistema: datos, validación, interfaz y exportación.
+- [ ] Explicar cómo se hace una especie personalizada sin modificar Python.
+- [ ] Identificar la relación entre diccionarios del inventario y objetos POO del modelo.
+- [ ] Ser capaz de explicar qué ocurre al seleccionar un animal y cómo se muestra su ficha en la GUI.
 
 - [ ] Ejecutar `python app.py`: CRUD, filtros, ficha clínica, pegar/importar ≤ 5 MB, foto, exportar PDF.  
 - [ ] Ejecutar `python ejecutar_tests.py` y abrir `tests/resultados/ultimo_informe.txt`.  
@@ -318,24 +412,23 @@ y en `_confirmar_salida` un `askyesno`.
 
 ---
 
-## 12. Archivos de esta carpeta
+## 13. Archivos de esta carpeta
 
 | Archivo / carpeta | Contenido |
 | --- | --- |
-| `app.py` / `main.py` | Programa: arranque de la GUI |
-| `datos/`, `validaciones/`, `interfaz/` | Módulos del programa |
+| `app.py` / `main.py` | Arranque del programa GUI |
+| `datos/`, `validaciones/`, `interfaz/` | Lógica de dominio, validación y interfaz |
+| `exportacion/` | Generación de PDF de fichas |
 | `probar_crud.py` | Prueba CRUD sin ventana |
 | `ejecutar_tests.py` | Batería unittest + informe en `tests/resultados/` |
-| `docs/pruebas.md` | Cómo ejecutar tests y dónde se guarda el resultado |
+| `docs/` | Requisitos (RF/RNF), CU, UML, manuales, pruebas |
 | `muestras/` | Fotos y PDF/DOCX de ejemplo para probar importación |
 | `Enunciado_oficial_Tarea_1.pdf` | PDF del profesor |
 | `Analisis_gestion_animales.md` | Esta guía (Markdown) |
-| `Tarea_1.pdf` | Esta guía en PDF |
-| `docs/Arquitectura_Refugio_Animal_v3.pdf` | Análisis de arquitectura (PDF) |
-| `generar_pdf.py` / `generar_arquitectura_docs.py` | Regeneran los PDF de documentación |
-| `README.md` | Índice de la carpeta |
-| `../gestion_animales_tkinter.ipynb` | Cuaderno didáctico / documentación narrada |
-| `../arquitectura_refugio_animal_v3.ipynb` | Cuaderno de arquitectura v3 |
-| `docs/` | Requisitos (RF/RNF), CU, UML, manuales, pruebas |
-| `exportacion/` | PDF de fichas |
+| `README.md` | Índice del proyecto y diferencias entre cuaderno y programa |
+| `gestion_animales_tkinter_V5_actualizado.ipynb` | Cuaderno didáctico actualizado |
+| `arquitectura_refugio_animal_v5.ipynb` | Cuaderno de arquitectura v5 |
+| `docs/Arquitectura_Refugio_Animal_v3.pdf` | Análisis de arquitectura en PDF |
+| `generar_pdf.py` | Herramienta para regenerar PDFs de documentación |
 | `adjuntos/` | Fotos/documentos importados por animal |
+| `tests/resultados/` | Informes de ejecución de pruebas |

@@ -60,7 +60,6 @@ tarea1/
 │   ├── ficha.py                   # Normalización clínica
 │   ├── adjuntos.py                # Copia/pegar bytes, límite 5 MB
 │   ├── modelos.py                 # AnimalRefugio ABC + subclases (@property)
-│   ├── decoradores.py             # @cuenta_usos (decorador propio)
 │   ├── adaptador_poo.py           # dict ↔ objeto + resumen polimórfico
 │   ├── gestor_especies.py         # Catálogo + especies_personalizadas.json
 │   └── recursos.py                # Logo
@@ -207,7 +206,7 @@ Casos típicos de extensión o cambio. Para cada uno: **dónde** y **qué no olv
 | Iniciales / CRUD si hace falta default | `datos/inventario.py` |
 | Formulario + variables + tabla | `interfaz/gestor.py` |
 | PDF | `exportacion/pdf_fichas.py` |
-| Tests | `tests/test_validaciones.py`, `test_datos.py`, `test_interfaz.py` |
+| Tests | `tests/test_validaciones.py`, `test_inventario.py`, `test_interfaz.py` |
 | Docs | `requisitos.md` (RF/RN), `manual_usuario.md`, `uml.md`, casos de uso |
 
 Si el campo es solo clínico (no va en el formulario principal): `ficha.py` + `ficha_clinica.py` (+ PDF).
@@ -286,7 +285,7 @@ Escritura atómica (temporal + `replace`). No meter I/O dentro de `validar_datos
 | ABC + herencia | `datos/modelos.py` → `AnimalRefugio` ← `Perro`/`Gato`/`Conejo`/`Loro`/`Hamster` |
 | Getters / setters | `@property` + `@nombre.setter`, `@edad.setter`, … |
 | Decoradores stdlib | `@abstractmethod`, `@classmethod`, `@property` |
-| Decorador propio | `@cuenta_usos` en `datos/decoradores.py` (usado en `info_basica`) |
+| Resumen breve | `info_basica()` en `AnimalRefugio` (usado por `resumen_polimorfico`) |
 | Adaptador | `registro_a_animal` / `animal_a_campos` / `resumen_polimorfico` |
 | Ficha POO | `cuidados_especificos()` + `generar_ficha()` en `AnimalRefugio` |
 | Especies personalizadas | `EspeciePersonalizada` + `gestor_especies.py` + `especies_personalizadas.json` |
@@ -302,7 +301,7 @@ Escritura atómica (temporal + `replace`). No meter I/O dentro de `validar_datos
 3. Test de sonido / adaptador.  
 4. Docs UML / RF-03.
 
-**El CRUD no cambia:** sigue validando con `validar_datos` y guardando `dict`. Los setters de la clase refuerzan las mismas reglas cuando se usa el adaptador.
+**El CRUD no cambia:** sigue validando con `validar_datos` y guardando `dict`. Los setters de la clase vuelven a comprobar los campos básicos al construir el objeto vía adaptador; el catálogo de especies y la clínica solo los cubre `validar_datos` (ver guía didáctica §3.7).
 
 ### 7.10b Sustituir del todo el inventario por objetos
 
@@ -331,7 +330,7 @@ Si se quisiera usar *solo* clases (sin dict):
 | Más campos / otra maquetación | `exportacion/pdf_fichas.py` |
 | Solo selección vs todos los visibles | Handler en `gestor.py` (ya distingue) |
 | Fuente / zoom inicial | Helvetica + `set_display_mode` en el mismo módulo |
-| Dependencia ausente | Import **perezoso** de `fpdf` (evitar romper el arranque GUI) |
+| Dependencia ausente | Import **perezoso** en `GestorAnimales._exportar_pdf` (`from exportacion.pdf_fichas import …`) para no cargar `fpdf2` al arrancar la GUI |
 
 ### 7.13 Internacionalización / textos
 
@@ -361,7 +360,7 @@ python ejecutar_tests.py
 | Cambio | Tests mínimos |
 | --- | --- |
 | Regla nueva | `test_validaciones` (caso ok + caso error) |
-| CRUD | `test_datos` |
+| CRUD | `test_inventario` |
 | Widget / flujo | `test_interfaz` |
 | Clínica / 5 MB | `test_ficha_clinica` |
 | PDF | `test_exportacion_pdf` |

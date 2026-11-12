@@ -1,4 +1,4 @@
-"""Pruebas de herencia, @property, decoradores y adaptador dict↔objeto."""
+"""Pruebas de herencia, @property y adaptador dict↔objeto."""
 
 from __future__ import annotations
 
@@ -151,14 +151,7 @@ class TestPropertyGettersSetters(unittest.TestCase):
             perro.nombre = "   "
 
 
-class TestDecoradorYClassmethod(unittest.TestCase):
-    def test_cuenta_usos_en_info_basica(self) -> None:
-        perro = Perro("Toby", 1, 8.3, "Negro")
-        self.assertEqual(getattr(perro, "_usos_info_basica", 0), 0)
-        perro.info_basica()
-        perro.info_basica()
-        self.assertEqual(perro._usos_info_basica, 2)
-
+class TestClassmethodCamposDesdeDict(unittest.TestCase):
     def test_classmethod_campos_desde_dict(self) -> None:
         kwargs = Perro.campos_desde_dict(_ficha())
         self.assertEqual(kwargs["nombre"], "Toby")
@@ -186,8 +179,8 @@ class TestEspeciePersonalizada(unittest.TestCase):
         self.assertIn("Hurón", ficha["generales"])
         self.assertIn("Nico", ficha["generales"])
         self.assertEqual(ficha["alimentacion"], "Carnívoro")
-        huron.info_basica()
-        self.assertEqual(huron._usos_info_basica, 1)
+        self.assertIn("Nico", huron.info_basica())
+        self.assertIn("Hurón", huron.info_basica())
 
     def test_hereda_validacion_peso(self) -> None:
         with self.assertRaisesRegex(ValueError, "peso"):
