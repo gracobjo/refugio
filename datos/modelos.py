@@ -11,7 +11,12 @@ import math
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Type
 
-from datos.constantes import PESO_MAX_KG, PESO_MIN_KG
+from datos.constantes import (
+    EDAD_MAXIMA as EDAD_MAXIMA_VALIDACION,
+    EDAD_MINIMA as EDAD_MINIMA_VALIDACION,
+    PESO_MAX_KG,
+    PESO_MIN_KG,
+)
 
 
 class AnimalRefugio(ABC):
@@ -23,8 +28,8 @@ class AnimalRefugio(ABC):
     """
 
     ESPECIE: str = ""
-    EDAD_MINIMA = 0
-    EDAD_MAXIMA = 30
+    EDAD_MINIMA = EDAD_MINIMA_VALIDACION
+    EDAD_MAXIMA = EDAD_MAXIMA_VALIDACION
 
     def __init__(
         self,

@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from typing import Any, Dict, Optional
 
-from datos.constantes import PESO_MAX_KG, PESO_MIN_KG
+from datos.constantes import EDAD_MAXIMA, EDAD_MINIMA, PESO_MAX_KG, PESO_MIN_KG
 from datos.ficha import (
     normalizar_documentos,
     normalizar_tratamientos,
@@ -64,8 +64,10 @@ def validar_datos(
         raise ValueError("El color es obligatorio.")
     if isinstance(edad, bool) or not isinstance(edad, int):
         raise ValueError("La edad debe ser un número entero.")
-    if edad < 0 or edad > 30:
-        raise ValueError("La edad debe estar entre 0 y 30 años.")
+    if edad < EDAD_MINIMA or edad > EDAD_MAXIMA:
+        raise ValueError(
+            f"La edad debe estar entre {EDAD_MINIMA} y {EDAD_MAXIMA} años."
+        )
 
     try:
         peso = float(datos.get("peso"))

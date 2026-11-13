@@ -103,6 +103,11 @@ class TestValidarDatos(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "0 y 30"):
             validar_datos(_base(edad=31))
 
+    def test_limites_de_edad_incluidos(self) -> None:
+        for edad in (0, 30):
+            with self.subTest(edad=edad):
+                self.assertEqual(validar_datos(_base(edad=edad))["edad"], edad)
+
     def test_peso_invalido(self) -> None:
         with self.assertRaisesRegex(ValueError, "peso"):
             validar_datos(_base(peso="abc"))
