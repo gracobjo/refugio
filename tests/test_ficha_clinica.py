@@ -5,8 +5,9 @@ from __future__ import annotations
 import sys
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 RAIZ_PROGRAMA = Path(__file__).resolve().parents[1]
 if str(RAIZ_PROGRAMA) not in sys.path:
@@ -24,6 +25,7 @@ from datos.inventario import (  # noqa: E402
     crear_animal,
     leer_animal,
 )
+from interfaz.ficha_clinica import DialogoFichaClinica  # noqa: E402
 from validaciones.reglas import validar_datos  # noqa: E402
 
 
@@ -83,6 +85,52 @@ class TestCamposClinicos(unittest.TestCase):
                     "tratamientos": [{"fecha": "2026-01-01", "descripcion": ""}],
                 }
             )
+
+
+class TestGuardadoFichaClinica(unittest.TestCase):
+    def setUp(self) -> None:
+        self.registro = {
+            "nombre": "Nube",
+            "especie": "Gato",
+            "edad": 2,
+            "peso": 3.5,
+            "color": "Gris",
+            "observaciones": "",
+            "foto": "",
+            "tratamientos": [],
+            "vacunaciones": [],
+            "documentos": [],
+        }
+        self.dialogo = object.__new__(DialogoFichaClinica)
+        self.dialogo._registro_destino = self.registro
+        self.dialogo.registro = deepcopy(self.registro)
+        self.dialogo.al_guardar = None
+
+    @patch.object(DialogoFichaClinica, "_restaurar_controles")
+    def test_confirma_cambios_clinicos_validados(self, _restaurar) -> None:
+        self.dialogo.registro["tratamientos"].append(
+            {"fecha": "2026-01-01", "descripcion": "  Revisión  "}
+        )
+
+        self.assertTrue(self.dialogo._avisar_cambio())
+        self.assertEqual(
+            self.registro["tratamientos"][0]["descripcion"], "Revisión"
+        )
+
+    @patch("interfaz.ficha_clinica.messagebox.showerror")
+    @patch.object(DialogoFichaClinica, "_restaurar_controles")
+    def test_rechaza_y_descarta_registro_invalido(
+        self, _restaurar, mostrar_error
+    ) -> None:
+        self.dialogo.registro["edad"] = 31
+        callback = Mock()
+        self.dialogo.al_guardar = callback
+
+        self.assertFalse(self.dialogo._avisar_cambio())
+        self.assertEqual(self.registro["edad"], 2)
+        self.assertEqual(self.dialogo.registro["edad"], 2)
+        callback.assert_not_called()
+        mostrar_error.assert_called_once()
 
 
 class TestAdjuntos(unittest.TestCase):

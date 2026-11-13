@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import tkinter as tk
+from copy import deepcopy
 from datetime import date
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
@@ -17,6 +18,7 @@ from datos.adjuntos import (
     registrar_foto_bytes,
 )
 from datos.ficha import asegurar_campos_clinicos
+from validaciones.reglas import validar_datos
 from interfaz.estilos import aplicar_tema
 from interfaz.portapapeles import (
     imagen_a_png_bytes,
@@ -43,7 +45,8 @@ class DialogoFichaClinica(tk.Toplevel):
     ) -> None:
         super().__init__(padre)
         self.animal_id = animal_id
-        self.registro = asegurar_campos_clinicos(registro)
+        self._registro_destino = registro
+        self.registro = asegurar_campos_clinicos(deepcopy(registro))
         self.al_guardar = al_guardar
         self._foto_tk = None  # evita que el GC borre la imagen
 
@@ -75,9 +78,34 @@ class DialogoFichaClinica(tk.Toplevel):
             anchor="e", padx=10, pady=(0, 10)
         )
 
-    def _avisar_cambio(self) -> None:
+    def _avisar_cambio(self) -> bool:
+        try:
+            limpio = validar_datos(
+                self.registro,
+                especie_previa=str(self.registro.get("especie", "")),
+            )
+        except ValueError as error:
+            self.registro = asegurar_campos_clinicos(
+                deepcopy(self._registro_destino)
+            )
+            self._restaurar_controles()
+            messagebox.showerror(
+                "No se pudo guardar la ficha clínica", str(error), parent=self
+            )
+            return False
+
+        self.registro = limpio
+        self._registro_destino.clear()
+        self._registro_destino.update(deepcopy(limpio))
         if self.al_guardar:
             self.al_guardar()
+        return True
+
+    def _restaurar_controles(self) -> None:
+        self._refrescar_tratamientos()
+        self._refrescar_vacunas()
+        self._refrescar_docs()
+        self._mostrar_foto()
 
     def _eliminar_de_lista(
         self,
@@ -179,10 +207,10 @@ class DialogoFichaClinica(tk.Toplevel):
                 "veterinario": self.trat_vet.get().strip(),
             }
         )
-        self.trat_desc.set("")
-        self.trat_vet.set("")
         self._refrescar_tratamientos()
-        self._avisar_cambio()
+        if self._avisar_cambio():
+            self.trat_desc.set("")
+            self.trat_vet.set("")
 
     def _del_tratamiento(self) -> None:
         self._eliminar_de_lista(
@@ -254,10 +282,10 @@ class DialogoFichaClinica(tk.Toplevel):
                 "proxima": self.vac_proxima.get().strip(),
             }
         )
-        self.vac_nombre.set("")
-        self.vac_proxima.set("")
         self._refrescar_vacunas()
-        self._avisar_cambio()
+        if self._avisar_cambio():
+            self.vac_nombre.set("")
+            self.vac_proxima.set("")
 
     def _del_vacuna(self) -> None:
         self._eliminar_de_lista(

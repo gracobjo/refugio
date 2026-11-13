@@ -980,7 +980,7 @@ No es un error de diseño: el proyecto tiene **dos puertas de validación** porq
 
 | Vía | Dónde | Cuándo se usa | Qué comprueba |
 | --- | --- | --- | --- |
-| Procedimental | `validaciones/reglas.py` → `validar_datos()` | Antes de `crear_animal` / `actualizar_animal` (CRUD sobre `dict`) | Nombre, especie (catálogo activo o `especie_previa`), color, edad 0–30, peso finito en rango, y normaliza clínica (foto, tratamientos, vacunas, documentos) |
+| Procedimental | `validaciones/reglas.py` → `validar_datos()` | Antes de `crear_animal` / `actualizar_animal` y antes de confirmar cambios en la ficha clínica (CRUD sobre `dict`) | Nombre, especie (catálogo activo o `especie_previa`), color, edad según `EDAD_MINIMA` / `EDAD_MAXIMA`, peso finito en rango, y normaliza clínica (foto, tratamientos, vacunas, documentos) |
 | Orientada a objetos | Setters `@property` en `AnimalRefugio` (`datos/modelos.py`) | Al construir o asignar atributos del objeto (`registro_a_animal` → `Perro(...)`, etc.) | Nombre, color, edad y peso (mismos rangos/constantes de peso); **no** valida el catálogo de especies ni la ficha clínica |
 
 **Flujo habitual en la app**
@@ -1048,7 +1048,7 @@ Confirmar `askyesno` → `borrar_animal` → `pop` + `borrar_adjuntos_animal` �
 
 ### Flujo 8. Ficha clínica y adjuntos
 
-Diálogo muta el dict del inventario in-place → `registrar_*` copia archivos a `adjuntos/<id>/...` → metadatos en JSON → `_tras_cambio_clinico` persiste.
+Diálogo edita una copia → `validar_datos` comprueba y normaliza el registro → si es válido, actualiza el dict del inventario y `_tras_cambio_clinico` persiste; si no, descarta el cambio. `registrar_*` copia archivos a `adjuntos/<id>/...`.
 
 ### Flujo 9. Exportación PDF
 

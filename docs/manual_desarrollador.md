@@ -301,7 +301,7 @@ Escritura atómica (temporal + `replace`). No meter I/O dentro de `validar_datos
 3. Test de sonido / adaptador.  
 4. Docs UML / RF-03.
 
-**El CRUD no cambia:** sigue validando con `validar_datos` y guardando `dict`. Los setters de la clase vuelven a comprobar los campos básicos al construir el objeto vía adaptador; el catálogo de especies y la clínica solo los cubre `validar_datos` (ver guía didáctica §3.7).
+**El CRUD no cambia:** sigue validando con `validar_datos` y guardando `dict`. La ficha clínica edita una copia y llama a `validar_datos` antes de reflejar los cambios en el inventario; si falla, conserva el registro anterior. Los setters de la clase vuelven a comprobar los campos básicos al construir el objeto vía adaptador (ver guía didáctica §3.7).
 
 ### 7.10b Sustituir del todo el inventario por objetos
 
