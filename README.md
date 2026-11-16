@@ -17,7 +17,7 @@ Los notebooks `gestion_animales_tkinter_V5_actualizado.ipynb` y `arquitectura_re
 
 ### Cuaderno vs programa (`app.py` / `main.py`)
 
-Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la entrega ejecutable es `tarea1/`.
+Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la entrega ejecutable está en la raíz del repositorio.
 
 | Aspecto | Cuaderno (`gestion_animales_tkinter_V5_actualizado.ipynb`) | Programa (`python app.py` o `main.py`) |
 | --- | --- | --- |
@@ -34,21 +34,14 @@ Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la ent
 | Estilos / tipografía (`estilos.py`) | Básicos de ttk | Tema completo |
 | Título de ventana | *…(demo cuaderno)* | *Refugio Animal - Gestión de animales* |
 
-Para enseñar conceptos: el cuaderno. Para demostrar la entrega: **`cd tarea1` → `python app.py`** (o `python main.py`).
+Para enseñar conceptos: el cuaderno. Para demostrar la entrega, ejecuta `python app.py` (o `python main.py`) desde la raíz del repositorio.
 
 ## Cómo ejecutar el programa
-
-Desde esta carpeta:
-
-```bash
-cd tarea1
-python app.py
-```
 
 Desde la raíz del repositorio:
 
 ```bash
-python tarea1/app.py
+python app.py
 ```
 
 También vale `python main.py` (delega en `app.py`).
@@ -67,7 +60,7 @@ Se ha verificado el estado actual del proyecto ejecutando la batería de pruebas
 python -m unittest discover -s tests -v
 ```
 
-Resultado verificado: 112 pruebas ejecutadas y correctas.
+Resultado verificado: 115 pruebas ejecutadas y correctas.
 
 ## Casos de prueba
 
@@ -76,13 +69,13 @@ Documentación completa: [docs/pruebas.md](docs/pruebas.md).
 **Ejecutar (consola + informe en disco):**
 
 ```bash
-python tarea1/ejecutar_tests.py
+python ejecutar_tests.py
 ```
 
 **Solo consola:**
 
 ```bash
-python -m unittest discover -s tarea1/tests -v
+python -m unittest discover -s tests -v
 ```
 
 **Dónde queda el resultado**
@@ -110,7 +103,7 @@ Dependencia PDF: `pip install fpdf2`
 ## Estructura del programa
 
 ```text
-tarea1/
+.
 ├── app.py / main.py
 ├── ejecutar_tests.py / probar_crud.py
 ├── pyproject.toml / .python-version
@@ -179,8 +172,8 @@ El inventario se manipula en memoria como **diccionarios** y se **persiste** en 
 
 ## Temario
 
-- `Tema2-POO/` — diccionarios + capa `AnimalRefugio` (herencia, properties)
-- `Tema3-InterfacesGraficas/` — pack/grid, StringVar, Treeview, diálogos, etc.
+- **Tema 2 — POO:** diccionarios + capa `AnimalRefugio` (herencia, properties)
+- **Tema 3 — Interfaces gráficas:** pack/grid, StringVar, Treeview, diálogos, etc.
 
 ### Capa POO (Tema 2) sin romper el enunciado
 

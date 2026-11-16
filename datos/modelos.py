@@ -60,7 +60,7 @@ class AnimalRefugio(ABC):
 
     @property
     def edad(self) -> int:
-        """Edad en años (0-30)."""
+        """Edad en años, dentro del rango permitido."""
         return self._edad
 
     @edad.setter

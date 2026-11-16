@@ -7,6 +7,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from datos.constantes import EDAD_MAXIMA, EDAD_MINIMA
+
 RAIZ_PROGRAMA = Path(__file__).resolve().parents[1]
 if str(RAIZ_PROGRAMA) not in sys.path:
     sys.path.insert(0, str(RAIZ_PROGRAMA))
@@ -100,11 +102,13 @@ class TestValidarDatos(unittest.TestCase):
             validar_datos(_base(edad="2"))
 
     def test_edad_fuera_de_rango(self) -> None:
-        with self.assertRaisesRegex(ValueError, "0 y 30"):
-            validar_datos(_base(edad=31))
+        with self.assertRaisesRegex(
+            ValueError, f"{EDAD_MINIMA} y {EDAD_MAXIMA}"
+        ):
+            validar_datos(_base(edad=EDAD_MAXIMA + 1))
 
     def test_limites_de_edad_incluidos(self) -> None:
-        for edad in (0, 30):
+        for edad in (EDAD_MINIMA, EDAD_MAXIMA):
             with self.subTest(edad=edad):
                 self.assertEqual(validar_datos(_base(edad=edad))["edad"], edad)
 

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 from datos.adaptador_poo import registro_a_animal, resumen_polimorfico
+from datos.constantes import EDAD_MAXIMA, EDAD_MINIMA
 from datos.gestor_especies import get_catalogo
 from datos.inventario import (
     actualizar_animal,
@@ -146,7 +147,9 @@ class GestorAnimales:
         )
         self.combo_especie.grid(row=0, column=3, sticky="ew", padx=5, pady=4)
 
-        ttk.Label(formulario, text="Edad (0-30):").grid(
+        ttk.Label(
+            formulario, text=f"Edad ({EDAD_MINIMA}-{EDAD_MAXIMA}):"
+        ).grid(
             row=1, column=0, sticky="w", padx=5, pady=4
         )
         ttk.Entry(formulario, textvariable=self.edad_var).grid(
