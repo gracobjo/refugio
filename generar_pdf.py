@@ -4,6 +4,8 @@ from pathlib import Path
 
 from fpdf import FPDF
 
+from datos.constantes import EDAD_MAXIMA, EDAD_MINIMA
+
 CARPETA = Path(__file__).resolve().parent
 FUENTE = Path(r"C:\Windows\Fonts\arial.ttf")
 FUENTE_B = Path(r"C:\Windows\Fonts\arialbd.ttf")
@@ -104,7 +106,7 @@ def main() -> None:
     escribir_parrafo(
         pdf,
         "Programa: Refugio Animal — gestor CRUD con Tkinter. "
-        "Cuaderno: gestion_animales_tkinter.ipynb. "
+        "Cuaderno: gestion_animales_tkinter_V5_actualizado.ipynb. "
         "Enunciado: Enunciado_oficial_Tarea_1.pdf. "
         "Entrega: 12 de noviembre de 2026.",
     )
@@ -186,7 +188,8 @@ def main() -> None:
     escribir_parrafo(
         pdf,
         "validar_datos limpia con strip, obliga nombre/especie/color, "
-        "valida edad 0-30 y peso finito > 0; si falla lanza ValueError. "
+        f"valida edad {EDAD_MINIMA}-{EDAD_MAXIMA} y peso finito > 0; "
+        "si falla lanza ValueError. "
         "crear/leer/actualizar/borrar reciben el inventario como argumento. "
         "leer_animal usa copy(). crear_animal calcula max(inventario, default=0)+1. "
         "Punto fuerte: se pueden probar sin abrir ninguna ventana.",
