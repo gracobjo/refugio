@@ -139,10 +139,12 @@ Dependencia PDF: `pip install fpdf2`
 ├── Analisis_gestion_animales.md
 ├── gestion_animales_tkinter_V5_actualizado.ipynb
 ├── arquitectura_refugio_animal_v5.ipynb
-├── generar_pdf.py / generar_arquitectura_docs.py
+├── generar_pdf.py
 ├── refugio.jpg
 └── README.md
 ```
+
+`Tarea_1.pdf` no se incluye en el repositorio; puedes generarlo cuando lo necesites con `python generar_pdf.py`.
 
 En la raíz del proyecto actual también están disponibles:
 

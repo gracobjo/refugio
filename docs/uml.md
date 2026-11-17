@@ -265,7 +265,7 @@ flowchart TB
     subgraph ART["Artefactos"]
       APP[app.py + paquetes]
       MEM[Inventario en RAM]
-      DISK[adjuntos/id/fotos|documentos]
+      DISK["adjuntos/id (fotos y documentos)"]
       OUT[PDF exportado]
     end
     APP --> PY

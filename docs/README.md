@@ -17,7 +17,8 @@
 **Pruebas:** `python ejecutar_tests.py` → `tests/resultados/`
 
 **Muestras:** [../muestras/README.md](../muestras/README.md)  
-**Análisis breve:** [../Analisis_gestion_animales.md](../Analisis_gestion_animales.md) · [../Tarea_1.pdf](../Tarea_1.pdf)  
+**Análisis breve:** [../Analisis_gestion_animales.md](../Analisis_gestion_animales.md)
+El PDF `Tarea_1.pdf` se genera bajo demanda con `python generar_pdf.py` y no se versiona.
 
 **Cuaderno (demo didáctica, GUI reducida):** [../gestion_animales_tkinter_V5_actualizado.ipynb](../gestion_animales_tkinter_V5_actualizado.ipynb) — diferencias en [../README.md](../README.md#cuaderno-vs-programa-apppy--mainpy)
 

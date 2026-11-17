@@ -1085,9 +1085,10 @@ IDs seleccionados o visibles → `asksaveasfilename` → import diferido `export
 | --- | --- | --- |
 | `ejecutar_tests.py` | Manual / CI local | Discover tests + informe |
 | `probar_crud.py` | Manual | CRUD en consola sin GUI |
-| `generar_pdf.py` | Manual | Genera `Tarea_1.pdf` (análisis); **depende de fuentes Arial en Windows** |
-| `generar_arquitectura_docs.py` | Manual | Notebook + PDF arquitectura v3 |
+| `generar_pdf.py` | Manual | Genera `Tarea_1.pdf` bajo demanda; **depende de fuentes Arial en Windows** |
 | `muestras/generar_muestras.py` | Manual | Regenera fotos/docs de ejemplo (Pillow + fpdf2) |
+
+`Tarea_1.pdf` es un artefacto generado y no se versiona. El generador anterior de documentación de arquitectura fue retirado; el cuaderno de arquitectura mantenido es `arquitectura_refugio_animal_v5.ipynb`.
 
 **Nota de rigor:** `generar_pdf.py` menciona en su texto embebido ejemplos antiguos (p. ej. especies Perro/Gato/Loro o `copy()` frente a `deepcopy`). El **código de la app** actual usa 5 especies nativas y `deepcopy`. Esa diferencia es del documento PDF generado, no del runtime.
 
@@ -1501,18 +1502,17 @@ Materializa animales, opcional portada, dibuja fichas, escribe vía temporal+rep
 | 24 | `ejecutar_tests.py` | Runner tests |
 | 25 | `probar_crud.py` | Demo CRUD |
 | 26 | `generar_pdf.py` | PDF análisis tarea |
-| 27 | `generar_arquitectura_docs.py` | Notebook+PDF arch. |
-| 28 | `muestras/generar_muestras.py` | Material muestra |
-| 29 | `tests/__init__.py` | Paquete tests |
-| 30 | `tests/test_inventario.py` | Tests CRUD |
-| 31 | `tests/test_validaciones.py` | Tests validación |
-| 32 | `tests/test_modelos_poo.py` | Tests POO |
-| 33 | `tests/test_gestor_especies.py` | Tests catálogo |
-| 34 | `tests/test_persistencia_inventario.py` | Tests JSON |
-| 35 | `tests/test_ficha_clinica.py` | Tests clínica |
-| 36 | `tests/test_exportacion_pdf.py` | Tests PDF |
-| 37 | `tests/test_interfaz.py` | Tests GUI |
-| 38 | `tests/test_portapapeles.py` | Tests clipboard |
+| 27 | `muestras/generar_muestras.py` | Material muestra |
+| 28 | `tests/__init__.py` | Paquete tests |
+| 29 | `tests/test_inventario.py` | Tests CRUD |
+| 30 | `tests/test_validaciones.py` | Tests validación |
+| 31 | `tests/test_modelos_poo.py` | Tests POO |
+| 32 | `tests/test_gestor_especies.py` | Tests catálogo |
+| 33 | `tests/test_persistencia_inventario.py` | Tests JSON |
+| 34 | `tests/test_ficha_clinica.py` | Tests clínica |
+| 35 | `tests/test_exportacion_pdf.py` | Tests PDF |
+| 36 | `tests/test_interfaz.py` | Tests GUI |
+| 37 | `tests/test_portapapeles.py` | Tests clipboard |
 
 ---
 
@@ -1702,21 +1702,6 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 | `_portada` | función | (sin docstring) |
 | `_iter_animales` | función | (sin docstring) |
 | `exportar_fichas_pdf` | función | Escribe un PDF con una ficha por animal y devuelve cuántas se exportaron. |
-
-### Inventario de `generar_arquitectura_docs.py`
-| Cualificador | Tipo | Docstring / nota |
-| --- | --- | --- |
-| `md` | función | (sin docstring) |
-| `code` | función | (sin docstring) |
-| `construir_notebook` | función | (sin docstring) |
-| `PdfArquitectura` | clase | (sin docstring) |
-| `PdfArquitectura.header` | método | (sin docstring) |
-| `PdfArquitectura.footer` | método | (sin docstring) |
-| `_parrafo` | función | (sin docstring) |
-| `_titulo` | función | (sin docstring) |
-| `_viñeta` | función | (sin docstring) |
-| `_tabla` | función | (sin docstring) |
-| `construir_pdf` | función | (sin docstring) |
 
 ### Inventario de `generar_pdf.py`
 | Cualificador | Tipo | Docstring / nota |
@@ -2036,7 +2021,7 @@ La explicación didáctica detallada está en las secciones 2–3 y el Anexo A. 
 
 1. **Función poco usada en la app:** `animal_a_campos` solo aparece en tests (no en el flujo GUI).
 2. **`CAMPOS_CLINICOS` en `ficha.py`:** constante de documentación/contrato; el código asegura campos iterando `ficha_vacia_clinica()`.
-3. **Dependencia de plataforma:** `os.startfile` en apertura de documentos; portapapeles `CF_HDROP` es Windows; `generar_pdf.py` / `generar_arquitectura_docs.py` asumen fuentes `C:\Windows\Fonts\arial*.ttf`.
+3. **Dependencia de plataforma:** `os.startfile` en apertura de documentos; portapapeles `CF_HDROP` es Windows; `generar_pdf.py` asume fuentes `C:\Windows\Fonts\arial*.ttf`.
 4. **Pillow y fpdf2:** opcionales/obligatorias según función (PDF requiere fpdf2; miniaturas/portapapeles mejoran con Pillow).
 5. **Rutas absolutas en JSON de documentos:** si se mueve la carpeta del proyecto, las rutas guardadas pueden dejar de existir.
 6. **Documento `generar_pdf.py`:** el PDF que genera puede describir detalles antiguos respecto al código actual (número de especies, etc.); priorizar siempre el `.py` de `tarea1/`.
