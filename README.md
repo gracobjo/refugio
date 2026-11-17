@@ -15,6 +15,12 @@ La aplicación se ejecuta como un sistema completo desde `app.py` y `main.py`, m
 
 Los notebooks `gestion_animales_tkinter_V5_actualizado.ipynb` y `arquitectura_refugio_animal_v5.ipynb` se usan como **guiones didácticos y documentación** paso a paso. El programa real son los `.py` de esta carpeta.
 
+### Ejecutar los cuadernos en Google Colab
+
+- `gestion_animales_tkinter_V5_actualizado.ipynb` usa Tkinter en escritorio y una interfaz CRUD con `ipywidgets` en Colab. Abre el cuaderno desde su enlace de Colab y selecciona **Entorno de ejecución → Ejecutar todas**.
+- `arquitectura_refugio_animal_v5.ipynb` prepara automáticamente el repositorio en `/content/refugio` cuando detecta Colab; después puedes ejecutar todas sus celdas.
+- Para abrir en Colab cambios locales que todavía no se han publicado en GitHub, sube el archivo `.ipynb` desde **Archivo → Subir cuaderno**. Los enlaces incluidos en los notebooks muestran la versión publicada en la rama del repositorio.
+
 ### Cuaderno vs programa (`app.py` / `main.py`)
 
 Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la entrega ejecutable está en la raíz del repositorio.
@@ -23,6 +29,7 @@ Las dos interfaces **no son idénticas**. El cuaderno enseña el núcleo; la ent
 | --- | --- | --- |
 | Rol | Guion didáctico | Entrega ejecutable |
 | Código | Celdas autocontenidas | Módulos (`interfaz/gestor.py`, …) |
+| Interfaz | Tkinter en escritorio; `ipywidgets` en Colab | Tkinter |
 | CRUD + filtros + tabla | Sí | Sí |
 | Panel ficha POO (`generar_ficha`) | Sí (versión compacta) | Sí |
 | Scrollbars en ficha (comportamiento / alimentación / cuidados) | Sí | Sí |
