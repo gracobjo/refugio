@@ -17,8 +17,9 @@ Los notebooks `gestion_animales_tkinter_V5_actualizado.ipynb` y `arquitectura_re
 
 ### Ejecutar los cuadernos en Google Colab
 
-- `gestion_animales_tkinter_V5_actualizado.ipynb` usa Tkinter en escritorio y una interfaz CRUD con `ipywidgets` en Colab. Abre el cuaderno desde su enlace de Colab y selecciona **Entorno de ejecución → Ejecutar todas**.
-- `arquitectura_refugio_animal_v5.ipynb` prepara automáticamente el repositorio en `/content/refugio` cuando detecta Colab; después puedes ejecutar todas sus celdas.
+- [Abrir el cuaderno de gestión en Google Colab](https://colab.research.google.com/github/gracobjo/refugio/blob/v5-simplificacion/gestion_animales_tkinter_V5_actualizado.ipynb): Tkinter en escritorio, interfaz CRUD con `ipywidgets` en Colab.
+- [Abrir el cuaderno de arquitectura en Google Colab](https://colab.research.google.com/github/gracobjo/refugio/blob/v5-simplificacion/arquitectura_refugio_animal_v5.ipynb): prepara automáticamente el repositorio en `/content/refugio`.
+- Tras abrir un cuaderno, selecciona **Entorno de ejecución → Ejecutar todas**.
 - Para abrir en Colab cambios locales que todavía no se han publicado en GitHub, sube el archivo `.ipynb` desde **Archivo → Subir cuaderno**. Los enlaces incluidos en los notebooks muestran la versión publicada en la rama del repositorio.
 
 ### Cuaderno vs programa (`app.py` / `main.py`)
